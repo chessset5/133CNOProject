@@ -1,2 +1,2 @@
-# 133prepCNOproj1
-Computer Science 133 prep for Code Name One, Project 1 of 4
+# 133CNOproj1
+Computer Science 133 for Code Name One, Project 1 of 4
