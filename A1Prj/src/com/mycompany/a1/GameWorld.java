@@ -165,8 +165,8 @@ public class GameWorld {
         ((Ant) this.gameObjects.get(antTag)).increaseHeading(15);
     }
 
-    public void setFoodConsumptionRate() {
-        ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(1);
+    public void setFoodConsumptionRate(int rate) {
+        ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(rate);
     }
 
     public void collideFlag1() {
@@ -187,10 +187,10 @@ public class GameWorld {
 
     public void collideFoodStation() {
         for (int i = 1; i <= this.numOfFoodStations; i++) {
-            if (((FoodStation) gameObjects.get(foodStationTag + i)).getCapcity() != 0) {
+            if (((FoodStation) gameObjects.get(foodStationTag + i)).getCapacity() != 0) {
                 ((Ant) this.gameObjects.get(antTag))
                         .increaseFoodLevel(((FoodStation) gameObjects.get(foodStationTag + i))
-                                .getCapcity());
+                                .getCapacity());
             }
         }
         this.numOfFoodStations++;

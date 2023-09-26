@@ -21,7 +21,7 @@ public abstract class Fixed extends GameObject {
     @Override
     public String toString() {
         String parent = super.toString();
-        return "" + parent + " size=" + this.ObjectSize + "";
+        return "" + parent + " size=" + this.getSize() + "";
     }
 
 }

@@ -6,16 +6,16 @@ import com.mycompany.a1.GameObjects.GameObject;
 import com.codename1.charts.models.Point;
 
 public class Flag extends Fixed {
-    protected static int sequenceNumber = 1;
+    private static int sequenceNumber = 1;
 
-    protected int flagNumber;
+    private int flagNumber;
 
     public Flag(Point startLocation) {
         super();
-        this.ObjectSize = 10;
+        this.setSize(10);
         // Flags are Orange
-        this.myColor = ColorUtil.argb(255, 255, 165, 0);
-        this.location = startLocation;
+        this.setColor(ColorUtil.argb(255, 255, 165, 0));
+        this.setLocation(startLocation);
         GameObject.putInBounds(this);
         this.flagNumber = Flag.sequenceNumber;
         Flag.sequenceNumber += 1;

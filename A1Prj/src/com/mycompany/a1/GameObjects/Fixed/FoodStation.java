@@ -4,16 +4,16 @@ import com.codename1.charts.util.ColorUtil;
 
 public class FoodStation extends Fixed {
 
-    protected int capacity;
+    private int capacity;
 
     public FoodStation() {
         super();
         // Food Stations are Red
-        this.myColor = ColorUtil.argb(255, 0, 255, 0);
-        this.capacity = this.ObjectSize;
+        this.setColor(ColorUtil.argb(255, 0, 255, 0));
+        this.capacity = this.getSize();
     }
 
-    public int getCapcity() {
+    public int getCapacity() {
         return this.capacity;
     }
 
@@ -31,8 +31,8 @@ public class FoodStation extends Fixed {
     @Override
     public void tick() {
         // goes black if it has no capacity
-        if (this.getCapcity() == 0) {
-            this.myColor = ColorUtil.argb(0, 0, 0, 0);
+        if (this.getCapacity() == 0) {
+            this.setColor(ColorUtil.argb(0, 0, 0, 0));
         }
     }
 

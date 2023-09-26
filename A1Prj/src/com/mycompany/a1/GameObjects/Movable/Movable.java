@@ -1,16 +1,54 @@
 package com.mycompany.a1.GameObjects.Movable;
 
-import java.util.PriorityQueue;
-
 import com.codename1.charts.models.Point;
-import com.mycompany.a1.Game;
 import com.mycompany.a1.GameObjects.GameObject;
 
 public abstract class Movable extends GameObject {
 
-    protected int heading;
-    protected int speed;
-    protected int foodLevel;
+    private int heading;
+    private int speed;
+    private int foodLevel;
+
+    // getters setters //
+    protected int getSpeed() {
+        return this.speed;
+    }
+
+    protected void setSpeed(int newSpeed) {
+        this.speed = newSpeed;
+    }
+
+    public int getFoodLevel() {
+        return this.foodLevel;
+    }
+
+    protected void setFoodLevel(int newFoodLevel) {
+        if (newFoodLevel < 0) {
+            newFoodLevel = 0;
+        }
+        this.foodLevel = newFoodLevel;
+    }
+
+    protected int getHeading() {
+        return this.heading;
+    }
+
+    public void setHeading(int degrees) {
+        // accounting for negative numbers
+        degrees %= 360;
+        degrees += 360;
+        degrees %= 360;
+        this.heading = degrees;
+    }
+
+    @Override
+    public boolean setLocation(Point newLocation) {
+        this.setLocation(newLocation);
+        GameObject.putInBounds(this);
+        return true;
+    }
+
+    // movable methods //
 
     public Movable() {
         super();
@@ -34,9 +72,6 @@ public abstract class Movable extends GameObject {
      * 
      */
     public boolean move() {
-        if (this.foodLevel == 0) {
-            this.speed = 0;
-        }
         int theta = 90 - heading;
         float delX = (float) Math.cos(Math.toRadians((double) theta));
         float delY = (float) Math.sin(Math.toRadians((double) theta));
@@ -48,13 +83,6 @@ public abstract class Movable extends GameObject {
             return false;
         }
         this.setLocation(new Point(delX, delY));
-        return true;
-    }
-
-    @Override
-    public boolean setLocation(Point newLocation) {
-        this.location = newLocation;
-        GameObject.putInBounds(this);
         return true;
     }
 
@@ -73,18 +101,13 @@ public abstract class Movable extends GameObject {
      * @return
      */
     public boolean increaseHeading(int inc) {
-        this.heading += inc;
-        this.heading %= 360;
+        this.setHeading(this.heading + inc);
         return true;
     }
 
     public boolean increaseFoodLevel(int inc) {
-        this.foodLevel += inc;
+        this.setFoodLevel(this.foodLevel + inc);
         return true;
-    }
-
-    public int getFoodLevel() {
-        return this.foodLevel;
     }
 
     public boolean resetSpeed() {
@@ -95,7 +118,7 @@ public abstract class Movable extends GameObject {
     @Override
     public String toString() {
         String parent = super.toString();
-        return "" + parent + " heading=" + this.heading + " speed=" + this.speed + " size=" + this.ObjectSize + "";
+        return "" + parent + " heading=" + this.heading + " speed=" + this.speed + " size=" + this.getSize() + "";
     }
 
 }
