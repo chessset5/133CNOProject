@@ -25,9 +25,20 @@ public class Flag extends Fixed {
         return flagNumber;
     }
 
+    /**
+     * Flag can not change color
+     */
     @Override
     public boolean setColor(int newColor) {
         return false;
+    }
+
+    /**
+     * Flag can not change size
+     */
+    @Override
+    public void setSize(Integer newSize) {
+        return;
     }
 
     @Override
