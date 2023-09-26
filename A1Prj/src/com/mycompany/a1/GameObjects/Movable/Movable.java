@@ -58,4 +58,14 @@ public abstract class Movable extends GameObject {
         return true;
     }
 
+    public boolean increaseSpeed(int inc) {
+        this.speed += inc;
+        return true;
+    }
+
+    public boolean resetSpeed() {
+        this.speed = 0;
+        return true;
+    }
+
 }

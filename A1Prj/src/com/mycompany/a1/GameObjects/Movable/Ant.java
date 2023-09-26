@@ -44,6 +44,9 @@ public class Ant extends Movable implements IFoodie {
 
     @Override
     public boolean move() {
+        if (this.isAntDead()) {
+            return false;
+        }
         int tmpSpeed = this.speed; // tmpSpeed to remove any sluggishness feelings while controlling the ant
         int tmpMaxSpeed = this.maximumSpeed * (this.healthLevel / this.maxHealth);
         if (this.speed > tmpMaxSpeed) {
@@ -53,6 +56,10 @@ public class Ant extends Movable implements IFoodie {
         boolean answer = super.move();
         this.speed = tmpSpeed;
         return answer;
+    }
+
+    public boolean isAntDead() {
+        return this.healthLevel == 0;
     }
 
     public int getLastFlag() {

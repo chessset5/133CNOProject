@@ -32,7 +32,56 @@ public class Game extends Form {
                         case 'a':
                             gw.accelerate();
                             break;
-                        // add code to handle rest of the commands
+                        case 'b':
+                            gw.break();
+                            break;
+                        case 'l':
+                            gw.left();
+                            break;
+                        case 'r':
+                            gw.right();
+                            break;
+                        case 'c':
+                            gw.setFoodConusmptionRate();
+                            break;
+
+                        case '1':
+                            gw.colideFlag1();
+                            break;
+                        case '2':
+                            gw.colideFlag2();
+                            break;
+                        case '3':
+                            gw.colideFlag3();
+                            break;
+                        case '4':
+                            gw.colideFlag4();
+                            break;
+                            
+                        case 'f':
+                            gw.colideFoodStation();
+                            break;
+                        case 'g':
+                            gw.colideSpider();
+                            break;
+                        case 't':
+                            gw.tick();
+                            break;
+                        case 'd':
+                            gw.display();
+                            break;
+                        case 'm':
+                            gw.map();
+                            break;
+                        case 'x':
+                            gw.exit();
+                            break;
+                        case 'y':
+                            gw.confirm();
+                            break;
+                        case 'n':
+                            gw.deny();
+                            break;
                     } // switch
             } // actionPerformed
         } // new ActionListener()
