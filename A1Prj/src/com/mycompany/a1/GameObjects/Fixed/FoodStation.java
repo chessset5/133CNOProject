@@ -4,7 +4,7 @@ import com.codename1.charts.util.ColorUtil;
 
 public class FoodStation extends Fixed {
 
-    private int capacity;
+    protected int capacity;
 
     public FoodStation() {
         super();
@@ -26,5 +26,9 @@ public class FoodStation extends Fixed {
             this.capacity = 0;
             return tmp;
         }
+    }
+
+    public void tick() {
+
     }
 }

@@ -14,4 +14,5 @@ public abstract class Fixed extends GameObject {
         return false;
     }
 
+    public abstract void tick();
 }

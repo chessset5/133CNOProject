@@ -4,9 +4,15 @@ import com.codename1.charts.models.Point;
 import com.mycompany.a1.GameObjects.GameObject;
 
 public class GameWorld {
+    private int lives;
+    private int clock;
+
     public void init() {
         // code here to create the
         // initial game objects/setup
+        this.lives = 3;
+        this.clock = 0;
+
     }
     // additional methods here to
     // manipulate world objects and

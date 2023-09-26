@@ -24,6 +24,9 @@ public abstract class GameObject {
 
     protected int myColor;
 
+    // TODO: Impliment tick
+    public abstract void tick();
+
     public GameObject() {
         // ObjectSize is between 10 and 50
         this.ObjectSize = rand.nextInt(41) + 10;
@@ -49,6 +52,8 @@ public abstract class GameObject {
         myColor = newColor;
         return true;
     }
+
+    // Class Statics //
 
     /**
      * Puts object in bounds if horribly out of bounds.
@@ -80,6 +85,26 @@ public abstract class GameObject {
             Integer tmpX = new Integer(Math.round(go.location.getY()) % Math.round(GameWorld.getWorldMax().getY()));
             go.location.setY((float) tmpX.doubleValue());
         }
+    }
+
+    public static boolean inBoundsCheck(GameObject go) {
+        // TODO: Move to GameWorld.
+        return GameObject.inBoundsCheck(go.getLocation());
+    }
+
+    public static boolean inBoundsCheck(Point pnt) {
+        // TODO: Move to GameWorld.
+        if (pnt.getX() > GameWorld.getWorldMax().getX()) {
+            return true;
+        } else if (pnt.getX() < GameWorld.getWorldMax().getX()) {
+            return true;
+        }
+        if (pnt.getY() > GameWorld.getWorldMax().getY()) {
+            return true;
+        } else if (pnt.getY() < GameWorld.getWorldMax().getY()) {
+            return true;
+        }
+        return false;
     }
 
 }

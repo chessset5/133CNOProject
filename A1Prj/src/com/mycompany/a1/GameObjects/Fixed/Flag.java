@@ -6,9 +6,9 @@ import com.mycompany.a1.GameObjects.GameObject;
 import com.codename1.charts.models.Point;
 
 public class Flag extends Fixed {
-    private static int sequenceNumber = 1;
+    protected static int sequenceNumber = 1;
 
-    private int flagNumber;
+    protected int flagNumber;
 
     public Flag(Point startLocation) {
         super();
@@ -28,6 +28,10 @@ public class Flag extends Fixed {
     @Override
     public boolean setColor(int newColor) {
         return false;
+    }
+
+    public void tick() {
+
     }
 
 }
