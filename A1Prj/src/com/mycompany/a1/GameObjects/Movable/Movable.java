@@ -65,6 +65,9 @@ public abstract class Movable extends GameObject {
      * 
      */
     public boolean move() {
+        if (this.foodLevel == 0) {
+            return false;
+        }
         int theta = 90 - heading;
         float delX = (float) Math.cos(Math.toRadians((double) theta));
         float delY = (float) Math.sin(Math.toRadians((double) theta));

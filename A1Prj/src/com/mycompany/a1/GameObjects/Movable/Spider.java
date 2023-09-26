@@ -7,6 +7,7 @@ public class Spider extends Movable {
         // Spider speed is 5:10
         this.setSpeed(this.getRand().nextInt(6) + 5);
         this.setHeading(this.getRand().nextInt(360));
+        this.setFoodLevel(1);
     }
 
     @Override

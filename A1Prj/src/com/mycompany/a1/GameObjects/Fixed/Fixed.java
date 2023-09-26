@@ -9,6 +9,14 @@ public abstract class Fixed extends GameObject {
         super();
     }
 
+    public Fixed(Point firstLocation) {
+        super();
+        super.setLocation(firstLocation);
+    }
+
+    /**
+     * Fixed objects can not move
+     */
     @Override
     public boolean setLocation(Point newLocation) {
         return false;

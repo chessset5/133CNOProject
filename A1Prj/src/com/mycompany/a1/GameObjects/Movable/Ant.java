@@ -24,6 +24,7 @@ public class Ant extends Movable implements IFoodie {
         this.lastFlagReached = 1;
         this.setSpeed(maximumSpeed / 4);
         this.setFoodLevel(100);
+        this.setFoodConsumption(0);
     }
 
     // getters setters //
@@ -36,8 +37,15 @@ public class Ant extends Movable implements IFoodie {
         this.setFoodConsumptionRate(newConsumptionRate);
     }
 
+    private int consumptionRateAtTick;
+    private boolean foodConsumptionTick = false;
+
     public void setFoodConsumptionRate(int newConsumptionRate) {
-        this.foodConsumptionRate = newConsumptionRate;
+        this.consumptionRateAtTick = newConsumptionRate;
+        if (this.consumptionRateAtTick < 1) {
+            this.consumptionRateAtTick = 1;
+        }
+        this.foodConsumptionTick = true;
     }
 
     public int getLastFlag() {
@@ -60,6 +68,11 @@ public class Ant extends Movable implements IFoodie {
     public void tick() {
         this.flagTick = true;
         this.damageTick = true;
+
+        if (this.foodConsumptionTick) {
+            this.foodConsumptionRate = consumptionRateAtTick;
+            this.foodConsumptionTick = false;
+        }
         super.tick();
     }
 
@@ -76,7 +89,8 @@ public class Ant extends Movable implements IFoodie {
         if (this.isAntDead()) {
             return false;
         }
-        int tmpSpeed = this.getSpeed(); // tmpSpeed to remove any sluggishness feelings while controlling the ant
+        // int tmpSpeed = this.getSpeed(); // tmpSpeed to remove any sluggishness
+        // feelings while controlling the ant
         int tmpMaxSpeed = this.maximumSpeed * (this.healthLevel / this.maxHealth);
         if (this.getSpeed() > tmpMaxSpeed) {
             this.setSpeed(tmpMaxSpeed);
@@ -87,7 +101,7 @@ public class Ant extends Movable implements IFoodie {
         if (answer) {
             this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
         }
-        this.setSpeed(tmpSpeed);
+        // this.setSpeed(tmpSpeed);
         return answer;
     }
 
@@ -95,6 +109,10 @@ public class Ant extends Movable implements IFoodie {
 
     public boolean isAntDead() {
         return this.healthLevel == 0;
+    }
+
+    public boolean isStarved() {
+        return this.getFoodLevel() == 0;
     }
 
     public boolean takeDamage(int damage) {
@@ -126,5 +144,13 @@ public class Ant extends Movable implements IFoodie {
         return "" + parent + "\nmaxSpeed=" + this.maximumSpeed
                 + " foodConsumptionRate=" + this.foodConsumptionRate
                 + "";
+    }
+
+    @Override
+    protected void setSpeed(int newSpeed) {
+        if (newSpeed < 0) {
+            newSpeed = 0;
+        }
+        super.setSpeed(newSpeed);
     }
 }

@@ -11,11 +11,10 @@ public class Flag extends Fixed {
     private int flagNumber;
 
     public Flag(Point startLocation) {
-        super();
+        super(startLocation);
         this.setSize(10);
         // Flags are Orange
         this.setColor(ColorUtil.argb(255, 255, 165, 0));
-        this.setLocation(startLocation);
         GameObject.putInBounds(this);
         this.flagNumber = Flag.sequenceNumber;
         Flag.sequenceNumber += 1;

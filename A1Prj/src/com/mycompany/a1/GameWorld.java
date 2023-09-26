@@ -127,6 +127,10 @@ public class GameWorld {
             System.out.println("\nAnt Died");
             return true;
         }
+        if (((Ant) this.gameObjects.get(antTag)).isStarved()) {
+            System.out.println("\nAnt starved");
+            return true;
+        }
         return false;
     }
 
@@ -155,44 +159,55 @@ public class GameWorld {
     // key presses //
 
     public void accelerate() {
+        System.out.println("accelerate");
         ((Ant) this.gameObjects.get(antTag)).increaseSpeed(3);
     }
 
     public void brake() {
+        System.out.println("braked");
         ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-3);
     }
 
     public void left() {
+        System.out.println("turned left");
         ((Ant) this.gameObjects.get(antTag)).increaseHeading(-15);
     }
 
     public void right() {
+        System.out.println("turned right");
         ((Ant) this.gameObjects.get(antTag)).increaseHeading(15);
     }
 
     public void setFoodConsumptionRate(int rate) {
+        System.out.println("food consumption rate was set to " + rate);
         ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(rate);
     }
 
     public void collideFlag1() {
+        System.out.println("Flag1 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(1);
     }
 
     public void collideFlag2() {
+        System.out.println("Flag2 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(2);
     }
 
     public void collideFlag3() {
+        System.out.println("Flag3 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(3);
     }
 
     public void collideFlag4() {
+        System.out.println("Flag4 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(4);
     }
 
     private boolean foodTick = false;
 
     public void collideFoodStation() {
+        System.out.println("Looking for food");
+
         // prevent two consumptions in one tick
         if (this.foodTick == false) {
             return;
@@ -211,10 +226,13 @@ public class GameWorld {
     }
 
     public void collideSpider() {
+        System.out.println("Look out for 8 legs");
         ((Ant) this.gameObjects.get(antTag)).takeDamage(1);
     }
 
     public void tick() {
+        System.out.println("Time has elapsed");
+
         foodTick = true;
         for (GameObject go : gameObjects.values()) {
             go.tick();
