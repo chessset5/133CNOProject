@@ -61,7 +61,6 @@ public class Ant extends Movable implements IFoodie {
         this.flagTick = true;
         this.damageTick = true;
         super.tick();
-        this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
     }
 
     /**
@@ -84,6 +83,10 @@ public class Ant extends Movable implements IFoodie {
         }
         // calling parent method
         boolean answer = super.move();
+        // if moved
+        if (answer) {
+            this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
+        }
         this.setSpeed(tmpSpeed);
         return answer;
     }

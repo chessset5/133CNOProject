@@ -13,6 +13,11 @@ public class FoodStation extends Fixed {
         this.capacity = this.getSize();
     }
 
+    public FoodStation(String name) {
+        this();
+        this.setName(name);
+    }
+
     public int getCapacity() {
         return this.capacity;
     }
@@ -22,18 +27,14 @@ public class FoodStation extends Fixed {
             this.capacity -= eaten;
             return eaten;
         } else {
+            // no capacity left
             int tmp = new Integer(this.capacity);
             this.capacity = 0;
+            // set food station to black if no capacity
+            this.setColor(ColorUtil.argb(0, 0, 0, 0));
             return tmp;
         }
-    }
 
-    @Override
-    public void tick() {
-        // goes black if it has no capacity
-        if (this.getCapacity() == 0) {
-            this.setColor(ColorUtil.argb(0, 0, 0, 0));
-        }
     }
 
     @Override

@@ -34,6 +34,11 @@ public abstract class GameObject {
         this.myColor = ColorUtil.BLUE;
     }
 
+    public GameObject(String name) {
+        this();
+        this.setName(name);
+    }
+
     // Getters and Setters
 
     public Integer getSize() {
