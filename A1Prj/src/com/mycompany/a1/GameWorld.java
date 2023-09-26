@@ -15,18 +15,33 @@ public class GameWorld {
     private int numOfFlags;
     private int numOfFoodStations;
 
+    // Hash Keys
+    /**
+     * private String flagTag = "Flag";
+     */
+    private String flagTag = "Flag";
+    /**
+     * private String antTag = "Ant";
+     */
+    private String antTag = "Ant";
+    /**
+     * private String spiderTag = "Spider";
+     */
+    private String spiderTag = "Spider";
+    /***
+     * private String foodStationTag = "FoodStation";
+     */
+    private String foodStationTag = "FoodStation";
+
     Hashtable<String, GameObject> gameObjects = new Hashtable<String, GameObject>();
 
+    // Init Methods
+
     public void init() {
-        // code here to create the
-        // initial game objects/setup
         this.lives = 3;
         this.clock = 0;
+        this.initObjects();
     }
-
-    // additional methods here to
-    // manipulate world objects and
-    // related game state data
 
     public void initObjects() {
         this.gameObjects.put("Flag1", new Flag(new Point(50.0f, 50.0f)));
@@ -40,18 +55,17 @@ public class GameWorld {
 
         this.numOfFlags = 4;
 
-        this.gameObjects.put("Player", new Ant(gameObjects.get("Flag1").getLocation()));
-        this.gameObjects.get("Player").setName("Player");
+        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation()));
+        this.gameObjects.get(antTag).setName(antTag);
 
         for (int i = 1; i < 3; i++) {
-            this.gameObjects.put(("Spider" + i), new Spider());
-            this.gameObjects.get(("Spider" + i)).setName(("Spider" + i));
-
+            this.gameObjects.put((spiderTag + i), new Spider());
+            this.gameObjects.get((spiderTag + i)).setName((spiderTag + i));
         }
 
         for (int i = 1; i < 5; i++) {
-            this.gameObjects.put(("FoodStation" + i), new FoodStation());
-            this.gameObjects.get(("FoodStation" + i)).setName(("FoodStation" + i));
+            this.gameObjects.put((foodStationTag + i), new FoodStation());
+            this.gameObjects.get((foodStationTag + i)).setName((foodStationTag + i));
         }
     }
 
@@ -61,13 +75,17 @@ public class GameWorld {
         this.gameObjects.put("Flag2", new Flag(new Point(350.0f, 550.0f)));
         this.gameObjects.put("Flag3", new Flag(new Point(400.0f, 900.0f)));
         this.gameObjects.put("Flag4", new Flag(new Point(700.0f, 200.0f)));
+        this.gameObjects.get("Flag1").setName("Flag1");
+        this.gameObjects.get("Flag2").setName("Flag2");
+        this.gameObjects.get("Flag3").setName("Flag3");
+        this.gameObjects.get("Flag4").setName("Flag4");
 
         this.numOfFlags = 4;
 
-        this.gameObjects.put("Player", new Ant(gameObjects.get("Flag1").getLocation()));
+        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation()));
 
         for (int i = 1; i < 3; i++) {
-            this.gameObjects.put(("Spider" + i), new Spider());
+            this.gameObjects.put((spiderTag + i), new Spider());
         }
     }
 
@@ -94,7 +112,7 @@ public class GameWorld {
     }
 
     public boolean winCondition() {
-        return ((Ant) this.gameObjects.get("Player")).getLastFlag() == this.numOfFlags;
+        return ((Ant) this.gameObjects.get(antTag)).getLastFlag() == this.numOfFlags;
     }
 
     // Game states
@@ -104,7 +122,7 @@ public class GameWorld {
     }
 
     public boolean restartCondition() {
-        return ((Ant) this.gameObjects.get("Player")).isAntDead()
+        return ((Ant) this.gameObjects.get(antTag)).isAntDead();
     }
 
     public void win() {
@@ -128,55 +146,55 @@ public class GameWorld {
     // key presses //
 
     public void accelerate() {
-        ((Ant) this.gameObjects.get("Player")).increaseSpeed(3);
+        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(3);
     }
 
     public void brake() {
-        ((Ant) this.gameObjects.get("Player")).increaseSpeed(-3);
+        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-3);
     }
 
     public void left() {
-        ((Ant) this.gameObjects.get("Player")).increaseHeading(-15);
+        ((Ant) this.gameObjects.get(antTag)).increaseHeading(-15);
     }
 
     public void right() {
-        ((Ant) this.gameObjects.get("Player")).increaseHeading(15);
+        ((Ant) this.gameObjects.get(antTag)).increaseHeading(15);
     }
 
-    public void setFoodConusmptionRate() {
-        ((Ant) this.gameObjects.get("Player")).setFoodConsumptionRate(1);
+    public void setFoodConsumptionRate() {
+        ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(1);
     }
 
     public void collideFlag1() {
-        ((Ant) this.gameObjects.get("Player")).setNextFlag(1);
+        ((Ant) this.gameObjects.get(antTag)).setNextFlag(1);
     }
 
     public void collideFlag2() {
-        ((Ant) this.gameObjects.get("Player")).setNextFlag(2);
+        ((Ant) this.gameObjects.get(antTag)).setNextFlag(2);
     }
 
     public void collideFlag3() {
-        ((Ant) this.gameObjects.get("Player")).setNextFlag(3);
+        ((Ant) this.gameObjects.get(antTag)).setNextFlag(3);
     }
 
     public void collideFlag4() {
-        ((Ant) this.gameObjects.get("Player")).setNextFlag(4);
+        ((Ant) this.gameObjects.get(antTag)).setNextFlag(4);
     }
 
     public void collideFoodStation() {
-        for (GameObject go : gameObjects.values()) {
-            if (go instanceof FoodStation) {
-                if (((FoodStation) go).getCapcity() != 0) {
-                    ((Ant) this.gameObjects.get("Player")).increaseFoodLevel(((FoodStation) go).getCapcity());
-                }
+        for (int i = 1; i <= this.numOfFoodStations; i++) {
+            if (((FoodStation) gameObjects.get(foodStationTag + i)).getCapcity() != 0) {
+                ((Ant) this.gameObjects.get(antTag))
+                        .increaseFoodLevel(((FoodStation) gameObjects.get(foodStationTag + i))
+                                .getCapcity());
             }
         }
         this.numOfFoodStations++;
-        this.gameObjects.put(("FoodStation" + this.numOfFoodStations), new FoodStation());
+        this.gameObjects.put((foodStationTag + this.numOfFoodStations), new FoodStation());
     }
 
     public void collideSpider() {
-        ((Ant) this.gameObjects.get("Player")).takeDamage(1);
+        ((Ant) this.gameObjects.get(antTag)).takeDamage(1);
     }
 
     public void tick() {
@@ -197,16 +215,16 @@ public class GameWorld {
     public void display() {
         System.out.println("Lives: " + this.lives);
         System.out.println("Clock: " + this.clock);
-        System.out.println("Ant's Highest Flag: " + ((Ant) this.gameObjects.get("Player")).getLastFlag());
-        System.out.println("Ant's Current Food Level: " + ((Ant) this.gameObjects.get("Player")).getFoodLevel());
-        System.out.println("Ant's Current Health Level: " + ((Ant) this.gameObjects.get("Player")).getHealthLevel());
+        System.out.println("Ant's Highest Flag: " + ((Ant) this.gameObjects.get(antTag)).getLastFlag());
+        System.out.println("Ant's Current Food Level: " + ((Ant) this.gameObjects.get(antTag)).getFoodLevel());
+        System.out.println("Ant's Current Health Level: " + ((Ant) this.gameObjects.get(antTag)).getHealthLevel());
         System.out.println("Current number of loaded objects: " + this.gameObjects.size());
     }
 
     public void map() {
         System.out.println("Displaying Map");
         for (GameObject go : gameObjects.values()) {
-            go.toString();
+            System.out.println(go.toString());
         }
     }
 
@@ -214,6 +232,8 @@ public class GameWorld {
     }
 
     public void confirm() {
+
+        System.exit(0);
     }
 
     public void deny() {

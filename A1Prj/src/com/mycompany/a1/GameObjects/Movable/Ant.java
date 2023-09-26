@@ -104,6 +104,8 @@ public class Ant extends Movable implements IFoodie {
     @Override
     public String toString() {
         String parent = super.toString();
-        return "" + parent + " maxSpeed=" + this.maximumSpeed + " foodConsumptionRate=" + this.foodConsumptionRate + "";
+        return "" + parent + "\nmaxSpeed=" + this.maximumSpeed
+                + " foodConsumptionRate=" + this.foodConsumptionRate
+                + "";
     }
 }

@@ -42,7 +42,7 @@ public class Game extends Form {
                             gw.right();
                             break;
                         case 'c':
-                            gw.setFoodConusmptionRate();
+                            gw.setFoodConsumptionRate();
                             break;
 
                         case '1':
