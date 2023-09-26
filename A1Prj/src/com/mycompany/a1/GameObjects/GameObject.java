@@ -16,25 +16,37 @@ import com.mycompany.a1.GameWorld;
  */
 public abstract class GameObject {
 
-    protected Random rand = new Random();
+    private Random rand = new Random();
 
-    protected Integer ObjectSize;
+    private Integer size;
 
-    protected Point location;
+    private Point location;
 
-    protected int myColor;
+    private int myColor;
 
-    protected String name;
-
-    // TODO: Impliment tick
-    public abstract void tick();
+    private String name;
 
     public GameObject() {
         // ObjectSize is between 10 and 50
-        this.ObjectSize = rand.nextInt(41) + 10;
+        this.size = rand.nextInt(41) + 10;
         this.location = new Point(rand.nextFloat() * 1000.0f, rand.nextFloat() * 1000.0f);
         GameObject.putInBounds(this);
         this.myColor = ColorUtil.BLUE;
+    }
+
+    // Getters and Setters
+
+    public Integer getSize() {
+        return this.size;
+    }
+
+    public void setSize(Integer newSize) {
+        if (newSize < 1) {
+            newSize = 1;
+        } else if (newSize > 1000) {
+            newSize = 1000;
+        }
+        this.size = newSize;
     }
 
     public void setName(String newName) {
@@ -58,6 +70,14 @@ public abstract class GameObject {
         myColor = newColor;
         return true;
     }
+
+    protected Random getRand() {
+        return rand;
+    }
+
+    // class methods //
+
+    public abstract void tick();
 
     // Class Statics //
 

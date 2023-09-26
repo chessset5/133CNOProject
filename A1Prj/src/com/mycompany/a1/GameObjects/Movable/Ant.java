@@ -6,31 +6,30 @@ import com.mycompany.a1.Interfaces.IFoodie;
 
 public class Ant extends Movable implements IFoodie {
 
-    protected int maximumSpeed = 20;
-    protected int foodConsumptionRate;
-    protected int maxHealth = 10;
-    protected int healthLevel = 10;
-    protected int lastFlagReached;
-
-    // uncomment for ghost ant() we might have later.
-    // public Ant() {
-    // super();
-    // this.ObjectSize = 5;
-    // // Ant Color is RED
-    // this.myColor = ColorUtil.argb(255, 255, 0, 0);
-    // this.heading = 0;
-    // this.lastFlagReached = 1;
-    // }
+    private int maximumSpeed = 20;
+    private int foodConsumptionRate;
+    private int maxHealth = 10;
+    private int healthLevel = 10;
+    private int lastFlagReached;
+    private boolean flagTick = false;
+    private boolean damageTick = false;
 
     public Ant(Point firstLocation) {
         super();
-        this.ObjectSize = 5;
+        this.setSize(5);
         // Ant Color is Black... or white? what ever this is:
-        this.myColor = ColorUtil.argb(255, 0, 0, 0);
+        this.setColor(ColorUtil.argb(255, 0, 0, 0));
         this.setLocation(firstLocation);
-        this.heading = 0;
+        this.setHeading(0);
         this.lastFlagReached = 1;
-        this.speed = maximumSpeed / 4;
+        this.setSpeed(maximumSpeed / 4);
+        this.setFoodLevel(100);
+    }
+
+    // getters setters //
+
+    public int getHealthLevel() {
+        return this.healthLevel;
     }
 
     public void setFoodConsumption(int newConsumptionRate) {
@@ -41,9 +40,36 @@ public class Ant extends Movable implements IFoodie {
         this.foodConsumptionRate = newConsumptionRate;
     }
 
+    public int getLastFlag() {
+        return lastFlagReached;
+    }
+
+    public boolean setNextFlag(int flag) {
+        // will only activatte after tick, if tick activated then
+        if (((flag - 1) != lastFlagReached) || (this.flagTick == false)) {
+            return false;
+        }
+        lastFlagReached = flag;
+        this.flagTick = false;
+        return true;
+    }
+
+    // class overrides //
+
+    @Override
     public void tick() {
+        this.flagTick = true;
+        this.damageTick = true;
         super.tick();
-        this.foodLevel -= this.foodConsumptionRate;
+        this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
+    }
+
+    /**
+     * ant can not change size
+     */
+    @Override
+    public void setSize(Integer newSize) {
+        return;
     }
 
     @Override
@@ -51,34 +77,27 @@ public class Ant extends Movable implements IFoodie {
         if (this.isAntDead()) {
             return false;
         }
-        int tmpSpeed = this.speed; // tmpSpeed to remove any sluggishness feelings while controlling the ant
+        int tmpSpeed = this.getSpeed(); // tmpSpeed to remove any sluggishness feelings while controlling the ant
         int tmpMaxSpeed = this.maximumSpeed * (this.healthLevel / this.maxHealth);
-        if (this.speed > tmpMaxSpeed) {
-            this.speed = tmpMaxSpeed;
+        if (this.getSpeed() > tmpMaxSpeed) {
+            this.setSpeed(tmpMaxSpeed);
         }
         // calling parent method
         boolean answer = super.move();
-        this.speed = tmpSpeed;
+        this.setSpeed(tmpSpeed);
         return answer;
     }
+
+    // class methods //
 
     public boolean isAntDead() {
         return this.healthLevel == 0;
     }
 
-    public int getLastFlag() {
-        return lastFlagReached;
-    }
-
-    public boolean setNextFlag(int flag) {
-        if ((flag - 1) != lastFlagReached) {
+    public boolean takeDamage(int damage) {
+        if (this.damageTick == false) {
             return false;
         }
-        lastFlagReached = flag;
-        return true;
-    }
-
-    public boolean takeDamage(int damage) {
         this.healthLevel -= damage;
         if (this.healthLevel < 0) {
             this.healthLevel = 0;
@@ -86,24 +105,23 @@ public class Ant extends Movable implements IFoodie {
 
         // adding red to visualize damage
         int inc = 255 / this.maxHealth;
-        int red = ColorUtil.red(this.myColor) + inc;
+        int red = ColorUtil.red(this.getColor()) + inc;
         if (red > 255) {
             red = 255;
         } else if (red < 0) {
             red = 0;
         }
-        this.myColor = ColorUtil.argb(255, red, 0, 0);
+        this.setColor(ColorUtil.argb(255, red, 0, 0));
 
+        this.damageTick = false;
         return true;
-    }
-
-    public int getHealthLevel() {
-        return this.healthLevel;
     }
 
     @Override
     public String toString() {
         String parent = super.toString();
-        return "" + parent + " maxSpeed=" + this.maximumSpeed + " foodConsumptionRate=" + this.foodConsumptionRate + "";
+        return "" + parent + "\nmaxSpeed=" + this.maximumSpeed
+                + " foodConsumptionRate=" + this.foodConsumptionRate
+                + "";
     }
 }
