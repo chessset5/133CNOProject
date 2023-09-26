@@ -30,8 +30,10 @@ public class Flag extends Fixed {
         return false;
     }
 
-    public void tick() {
-
+    @Override
+    public String toString() {
+        String parent = super.toString();
+        return "" + parent + " seqNum=" + this.getFlagNumber() + "";
     }
 
 }

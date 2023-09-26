@@ -24,6 +24,8 @@ public abstract class GameObject {
 
     protected int myColor;
 
+    protected String name;
+
     // TODO: Impliment tick
     public abstract void tick();
 
@@ -33,6 +35,10 @@ public abstract class GameObject {
         this.location = new Point(rand.nextFloat() * 1000.0f, rand.nextFloat() * 1000.0f);
         GameObject.putInBounds(this);
         this.myColor = ColorUtil.BLUE;
+    }
+
+    public void setName(String newName) {
+        this.name = newName;
     }
 
     public Point getLocation() {
@@ -105,6 +111,16 @@ public abstract class GameObject {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        double xRound = Math.round(this.location.getX() * 10.0f) / 10.0;
+        double yRound = Math.round(this.location.getY() * 10.0f) / 10.0;
+        return "" + name + " loc=" + xRound + "," + yRound +
+                " color: " + "[" + ColorUtil.red(myColor) + ","
+                + ColorUtil.green(myColor) + ","
+                + ColorUtil.blue(myColor) + "]";
     }
 
 }

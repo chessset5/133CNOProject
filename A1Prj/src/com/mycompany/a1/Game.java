@@ -33,7 +33,7 @@ public class Game extends Form {
                             gw.accelerate();
                             break;
                         case 'b':
-                            gw.break();
+                            gw.brake();
                             break;
                         case 'l':
                             gw.left();
@@ -46,23 +46,23 @@ public class Game extends Form {
                             break;
 
                         case '1':
-                            gw.colideFlag1();
+                            gw.collideFlag1();
                             break;
                         case '2':
-                            gw.colideFlag2();
+                            gw.collideFlag2();
                             break;
                         case '3':
-                            gw.colideFlag3();
+                            gw.collideFlag3();
                             break;
                         case '4':
-                            gw.colideFlag4();
+                            gw.collideFlag4();
                             break;
-                            
+
                         case 'f':
-                            gw.colideFoodStation();
+                            gw.collideFoodStation();
                             break;
                         case 'g':
-                            gw.colideSpider();
+                            gw.collideSpider();
                             break;
                         case 't':
                             gw.tick();

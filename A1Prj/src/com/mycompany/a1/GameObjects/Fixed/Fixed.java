@@ -14,5 +14,14 @@ public abstract class Fixed extends GameObject {
         return false;
     }
 
-    public abstract void tick();
+    public void tick() {
+
+    }
+
+    @Override
+    public String toString() {
+        String parent = super.toString();
+        return "" + parent + " size=" + this.ObjectSize + "";
+    }
+
 }

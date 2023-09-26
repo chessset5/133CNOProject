@@ -25,8 +25,8 @@ public class Ant extends Movable implements IFoodie {
     public Ant(Point firstLocation) {
         super();
         this.ObjectSize = 5;
-        // Ant Color is RED
-        this.myColor = ColorUtil.argb(255, 255, 0, 0);
+        // Ant Color is Black... or white? what ever this is:
+        this.myColor = ColorUtil.argb(255, 0, 0, 0);
         this.setLocation(firstLocation);
         this.heading = 0;
         this.lastFlagReached = 1;
@@ -34,6 +34,10 @@ public class Ant extends Movable implements IFoodie {
     }
 
     public void setFoodConsumption(int newConsumptionRate) {
+        this.setFoodConsumptionRate(newConsumptionRate);
+    }
+
+    public void setFoodConsumptionRate(int newConsumptionRate) {
         this.foodConsumptionRate = newConsumptionRate;
     }
 
@@ -72,5 +76,34 @@ public class Ant extends Movable implements IFoodie {
         }
         lastFlagReached = flag;
         return true;
+    }
+
+    public boolean takeDamage(int damage) {
+        this.healthLevel -= damage;
+        if (this.healthLevel < 0) {
+            this.healthLevel = 0;
+        }
+
+        // adding red to visualize damage
+        int inc = 255 / this.maxHealth;
+        int red = ColorUtil.red(this.myColor) + inc;
+        if (red > 255) {
+            red = 255;
+        } else if (red < 0) {
+            red = 0;
+        }
+        this.myColor = ColorUtil.argb(255, red, 0, 0);
+
+        return true;
+    }
+
+    public int getHealthLevel() {
+        return this.healthLevel;
+    }
+
+    @Override
+    public String toString() {
+        String parent = super.toString();
+        return "" + parent + " maxSpeed=" + this.maximumSpeed + " foodConsumptionRate=" + this.foodConsumptionRate + "";
     }
 }

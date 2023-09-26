@@ -28,7 +28,18 @@ public class FoodStation extends Fixed {
         }
     }
 
+    @Override
     public void tick() {
-
+        // goes black if it has no capacity
+        if (this.getCapcity() == 0) {
+            this.myColor = ColorUtil.argb(0, 0, 0, 0);
+        }
     }
+
+    @Override
+    public String toString() {
+        String parent = super.toString();
+        return "" + parent + " capacity=" + this.capacity + "";
+    }
+
 }

@@ -63,9 +63,39 @@ public abstract class Movable extends GameObject {
         return true;
     }
 
+    /**
+     * <ul>
+     * <li>Positive values rotate clock wise, from north: right.</li>
+     * <li>Negative values rotate counter clock wise, from north: left</li>
+     * </ul>
+     * 
+     * @param inc
+     * @return
+     */
+    public boolean increaseHeading(int inc) {
+        this.heading += inc;
+        this.heading %= 360;
+        return true;
+    }
+
+    public boolean increaseFoodLevel(int inc) {
+        this.foodLevel += inc;
+        return true;
+    }
+
+    public int getFoodLevel() {
+        return this.foodLevel;
+    }
+
     public boolean resetSpeed() {
         this.speed = 0;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        String parent = super.toString();
+        return "" + parent + " heading=" + this.heading + " speed=" + this.speed + " size=" + this.ObjectSize + "";
     }
 
 }
