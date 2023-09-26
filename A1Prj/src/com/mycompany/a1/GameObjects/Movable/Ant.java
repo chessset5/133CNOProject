@@ -12,6 +12,7 @@ public class Ant extends Movable implements IFoodie {
     private int healthLevel = 10;
     private int lastFlagReached;
     private boolean flagTick = false;
+    private boolean damageTick = false;
 
     public Ant(Point firstLocation) {
         super();
@@ -58,6 +59,7 @@ public class Ant extends Movable implements IFoodie {
     @Override
     public void tick() {
         this.flagTick = true;
+        this.damageTick = true;
         super.tick();
         this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
     }
@@ -93,6 +95,9 @@ public class Ant extends Movable implements IFoodie {
     }
 
     public boolean takeDamage(int damage) {
+        if (this.damageTick == false) {
+            return false;
+        }
         this.healthLevel -= damage;
         if (this.healthLevel < 0) {
             this.healthLevel = 0;
@@ -108,6 +113,7 @@ public class Ant extends Movable implements IFoodie {
         }
         this.setColor(ColorUtil.argb(255, red, 0, 0));
 
+        this.damageTick = false;
         return true;
     }
 

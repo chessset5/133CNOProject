@@ -12,6 +12,7 @@ import com.mycompany.a1.GameObjects.Movable.*;
 public class GameWorld {
     private int lives;
     private int clock;
+    private int winClock;
     private int numOfFlags;
     private int numOfFoodStations;
 
@@ -126,17 +127,17 @@ public class GameWorld {
     }
 
     public void win() {
-        System.out.println(("Game over, you win!\n" +
-                "Total time: " + clock));
+        System.out.println(("\nGame over, you win!\n" +
+                "Total time: " + winClock));
     }
 
     public void loose() {
-        System.out.println("Game over, you failed!");
+        System.out.println("\nGame over, you failed!");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
         }
-        exit();
+        this.exit();
     }
 
     public void restart() {

@@ -41,13 +41,6 @@ public abstract class Movable extends GameObject {
         this.heading = degrees;
     }
 
-    @Override
-    public boolean setLocation(Point newLocation) {
-        this.setLocation(newLocation);
-        GameObject.putInBounds(this);
-        return true;
-    }
-
     // movable methods //
 
     public Movable() {
