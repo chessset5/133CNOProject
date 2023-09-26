@@ -37,9 +37,9 @@ public abstract class Movable extends GameObject {
         if (this.foodLevel == 0) {
             this.speed = 0;
         }
-        int tmpHeading = 90 - heading;
-        float delX = (float) Math.cos(Math.toRadians((double) tmpHeading));
-        float delY = (float) Math.sin(Math.toRadians((double) tmpHeading));
+        int theta = 90 - heading;
+        float delX = (float) Math.cos(Math.toRadians((double) theta));
+        float delY = (float) Math.sin(Math.toRadians((double) theta));
         delX *= this.speed;
         delY *= this.speed;
         delX += this.getLocation().getX();

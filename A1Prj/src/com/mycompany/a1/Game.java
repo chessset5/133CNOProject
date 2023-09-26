@@ -30,49 +30,106 @@ public class Game extends Form {
                 if (sCommand.length() != 0)
                     switch (sCommand.charAt(0)) {
                         case 'a':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.accelerate();
                             break;
                         case 'b':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.brake();
                             break;
                         case 'l':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.left();
                             break;
                         case 'r':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.right();
                             break;
                         case 'c':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.setFoodConsumptionRate();
                             break;
 
                         case '1':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideFlag1();
                             break;
                         case '2':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideFlag2();
                             break;
                         case '3':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideFlag3();
                             break;
                         case '4':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideFlag4();
                             break;
 
                         case 'f':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideFoodStation();
                             break;
                         case 'g':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.collideSpider();
                             break;
                         case 't':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.tick();
                             break;
                         case 'd':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.display();
                             break;
                         case 'm':
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                             gw.map();
                             break;
+
                         case 'x':
                             gw.exit();
                             break;
@@ -82,6 +139,11 @@ public class Game extends Form {
                         case 'n':
                             gw.deny();
                             break;
+                        default:
+                            if (gw.inExit()) {
+                                gw.exit();
+                                break;
+                            }
                     } // switch
             } // actionPerformed
         } // new ActionListener()

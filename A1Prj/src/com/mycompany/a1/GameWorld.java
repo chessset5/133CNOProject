@@ -1,6 +1,10 @@
 package com.mycompany.a1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import com.codename1.charts.models.Point;
 import com.mycompany.a1.GameObjects.GameObject;
@@ -210,9 +214,12 @@ public class GameWorld {
         if (this.restartCondition()) {
             this.restartInitObjects();
         }
+
+        this.clock++;
     }
 
     public void display() {
+        System.out.println();
         System.out.println("Lives: " + this.lives);
         System.out.println("Clock: " + this.clock);
         System.out.println("Ant's Highest Flag: " + ((Ant) this.gameObjects.get(antTag)).getLastFlag());
@@ -222,20 +229,47 @@ public class GameWorld {
     }
 
     public void map() {
-        System.out.println("Displaying Map");
-        for (GameObject go : gameObjects.values()) {
-            System.out.println(go.toString());
+        System.out.println("\nDisplaying Map");
+
+        // Stupid way to get all the values to sort
+        // TODO: redo this using maps or something,
+        // there has to be a faster or cleaner way
+        ArrayList<String> tmpList = new ArrayList<String>();
+        for (GameObject go : this.gameObjects.values()) {
+            tmpList.add(go.toString());
+        }
+        Collections.sort(tmpList);
+
+        for (String tmp : tmpList) {
+            System.out.println(tmp);
         }
     }
 
+    // Exit condition
+
+    private boolean inExit = false;
+
     public void exit() {
+        if (this.inExit) {
+            System.out.println("\nKey press denied\nIn exit mode.");
+        }
+
+        this.inExit = true;
+        System.out.println("\nDo you wish to exit?\ny/n");
     }
 
     public void confirm() {
-
-        System.exit(0);
+        if (this.inExit) {
+            System.exit(0);
+        }
     }
 
     public void deny() {
+        System.out.println("\nn confirmed\nreturning to game world");
+        this.inExit = false;
+    }
+
+    public boolean inExit() {
+        return this.inExit;
     }
 }
