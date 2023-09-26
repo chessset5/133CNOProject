@@ -12,16 +12,6 @@ public class Ant extends Movable implements IFoodie {
     protected int healthLevel = 10;
     protected int lastFlagReached;
 
-    // uncomment for ghost ant() we might have later.
-    // public Ant() {
-    // super();
-    // this.ObjectSize = 5;
-    // // Ant Color is RED
-    // this.myColor = ColorUtil.argb(255, 255, 0, 0);
-    // this.heading = 0;
-    // this.lastFlagReached = 1;
-    // }
-
     public Ant(Point firstLocation) {
         super();
         this.ObjectSize = 5;
