@@ -11,13 +11,19 @@ public class Flag extends Fixed {
     private int flagNumber;
 
     public Flag(Point startLocation) {
+        // setting initial location
+        // Flag can not have its location changed once set
         super(startLocation);
         this.setSize(10);
         // Flags are Orange
         this.setColor(ColorUtil.argb(255, 255, 165, 0));
         GameObject.putInBounds(this);
-        this.flagNumber = Flag.sequenceNumber;
-        Flag.sequenceNumber += 1;
+        Flag.setFlagNumber(this);
+    }
+
+    private static void setFlagNumber(Flag f) {
+        f.flagNumber = Flag.sequenceNumber;
+        Flag.sequenceNumber++;
     }
 
     public int getFlagNumber() {
@@ -44,6 +50,11 @@ public class Flag extends Fixed {
     public String toString() {
         String parent = super.toString();
         return "" + parent + " seqNum=" + this.getFlagNumber() + "";
+    }
+
+    @Override
+    public void tick() {
+
     }
 
 }
