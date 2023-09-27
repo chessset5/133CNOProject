@@ -18,12 +18,8 @@ public class Flag extends Fixed {
         // Flags are Orange
         this.setColor(ColorUtil.argb(255, 255, 165, 0));
         GameObject.putInBounds(this);
-        Flag.setFlagNumber(this);
-    }
-
-    private static void setFlagNumber(Flag f) {
-        f.flagNumber = Flag.sequenceNumber;
-        Flag.sequenceNumber++;
+        this.flagNumber = Flag.sequenceNumber;
+        Flag.sequenceNumber += 1;
     }
 
     public int getFlagNumber() {
