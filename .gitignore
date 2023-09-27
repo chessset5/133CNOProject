@@ -41,6 +41,7 @@ replay_pid*
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,java,eclipse,intellij,visualstudio,visualstudiocode,intellij+all
 
 ### Eclipse ###
+t.metadata
 .metadata
 bin/
 tmp/
