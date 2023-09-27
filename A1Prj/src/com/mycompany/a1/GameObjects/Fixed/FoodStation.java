@@ -43,4 +43,13 @@ public class FoodStation extends Fixed {
         return "" + parent + " capacity=" + this.capacity + "";
     }
 
+    @Override
+    public void tick() {
+        // ensuring that object goes to black if capacity is drained
+        if (this.capacity <= 0) {
+            this.capacity = 0;
+            this.setColor(ColorUtil.argb(0, 0, 0, 0));
+        }
+    }
+
 }

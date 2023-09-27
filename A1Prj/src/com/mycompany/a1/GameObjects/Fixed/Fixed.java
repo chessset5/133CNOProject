@@ -5,17 +5,31 @@ import com.mycompany.a1.GameObjects.GameObject;
 
 public abstract class Fixed extends GameObject {
 
+    /**
+     * Fixed will have a random position
+     */
     public Fixed() {
         super();
     }
 
+    /**
+     * Sets fixed position
+     * 
+     * @param firstLocation
+     */
+    public Fixed(Point firstLocation) {
+        super();
+        super.setLocation(firstLocation);
+    }
+
+    public abstract void tick();
+
+    /**
+     * Fixed objects will not move
+     */
     @Override
     public boolean setLocation(Point newLocation) {
         return false;
-    }
-
-    public void tick() {
-
     }
 
     @Override

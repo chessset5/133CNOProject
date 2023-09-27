@@ -35,6 +35,9 @@ public class GameWorld {
      */
     private String foodStationTag = "FoodStation";
 
+    /**
+     * Object to hold all the GameObjects
+     */
     Hashtable<String, GameObject> gameObjects = new Hashtable<String, GameObject>();
 
     // Init Methods
@@ -45,7 +48,8 @@ public class GameWorld {
         this.initObjects();
     }
 
-    public void initObjects() {
+    private void initObjects() {
+        // Flags
         this.gameObjects.put("Flag1", new Flag(new Point(50.0f, 50.0f)));
         this.gameObjects.put("Flag2", new Flag(new Point(350.0f, 550.0f)));
         this.gameObjects.put("Flag3", new Flag(new Point(400.0f, 900.0f)));
@@ -57,14 +61,18 @@ public class GameWorld {
 
         this.numOfFlags = 4;
 
-        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation()));
+        // Ant
+        // settings to Flag1 position, heading 0, and speed 10
+        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation(), 0, 10));
         this.gameObjects.get(antTag).setName(antTag);
 
+        // Spiders
         for (int i = 1; i < this.numSpiders; i++) {
             this.gameObjects.put((spiderTag + i), new Spider());
             this.gameObjects.get((spiderTag + i)).setName((spiderTag + i));
         }
 
+        // Food Stations
         this.numOfFoodStations = 0;
         for (int i = 1; i < 5; i++) {
             this.gameObjects.put((foodStationTag + i), new FoodStation());
@@ -73,19 +81,22 @@ public class GameWorld {
         }
     }
 
-    public void restartInitObjects() {
+    private void restartInitObjects() {
         this.lives -= 1;
 
+        // If there are no more lives left
         if (this.looseCondition()) {
             this.loose();
+            return;
         }
 
         System.out.println("Resetting Game World");
 
         this.numOfFlags = 4;
 
-        // only ant resets
-        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation()));
+        // Ant only resets
+        // settings to Flag1 position, heading 0, and speed 10
+        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation(), 0, 10));
         this.gameObjects.get(antTag).setName(antTag);
 
     }
@@ -114,31 +125,59 @@ public class GameWorld {
 
     // Game states
 
+    /**
+     * @return True if win condition met,
+     *         false otherwise
+     */
     public boolean winCondition() {
         return ((Ant) this.gameObjects.get(antTag)).getLastFlag() == this.numOfFlags;
     }
 
+    /**
+     * @return True if loose condition met,
+     *         false otherwise
+     */
     public boolean looseCondition() {
         return this.lives == 0;
     }
 
+    /**
+     * @return True if restart condition met,
+     *         false otherwise
+     * @note restart condition is defined as the ant having 0 health or 0 food level
+     */
     public boolean restartCondition() {
         if (((Ant) this.gameObjects.get(antTag)).isAntDead()) {
             System.out.println("\nAnt Died");
             return true;
         }
+        if (((Ant) this.gameObjects.get(antTag)).isStarved()) {
+            System.out.println("\nAnt starved");
+            return true;
+        }
         return false;
     }
 
+    /**
+     * Win Print out
+     */
     public void win() {
         System.out.println(("\nGame over, you win!\n" +
                 "Total time: " + winClock));
     }
 
+    /**
+     * True disables all keys but y.
+     * Used for preventing the game from continuing once all lives are lost.
+     */
     private boolean inLooseExit = false;
 
+    /**
+     * Loose Print Out
+     */
     public void loose() {
         System.out.println("\nGame over, you failed!");
+        // 3 second sleep
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
@@ -148,51 +187,85 @@ public class GameWorld {
         this.inExit = true;
     }
 
+    /**
+     * Restarts Game World without resetting game
+     */
     public void restart() {
         this.restartInitObjects();
     }
 
     // key presses //
 
+    /**
+     * increases player ant's speed
+     */
     public void accelerate() {
+        System.out.println("accelerate");
         ((Ant) this.gameObjects.get(antTag)).increaseSpeed(3);
     }
 
+    /**
+     * decreases player ant's speed to 0
+     */
     public void brake() {
+        System.out.println("braked");
         ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-3);
     }
 
+    /**
+     * turn player ant left
+     */
     public void left() {
-        ((Ant) this.gameObjects.get(antTag)).increaseHeading(-15);
+        System.out.println("turned left");
+        ((Ant) this.gameObjects.get(antTag)).incrementHeading(-15);
     }
 
+    /**
+     * turn player ant right
+     */
     public void right() {
-        ((Ant) this.gameObjects.get(antTag)).increaseHeading(15);
+        System.out.println("turned right");
+        ((Ant) this.gameObjects.get(antTag)).incrementHeading(15);
     }
 
+    /**
+     * changes food consumption rate
+     */
     public void setFoodConsumptionRate(int rate) {
+        System.out.println("food consumption rate was set to " + rate);
         ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(rate);
     }
 
     public void collideFlag1() {
+        System.out.println("Flag1 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(1);
     }
 
     public void collideFlag2() {
+        System.out.println("Flag2 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(2);
     }
 
     public void collideFlag3() {
+        System.out.println("Flag3 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(3);
     }
 
     public void collideFlag4() {
+        System.out.println("Flag4 Hit");
         ((Ant) this.gameObjects.get(antTag)).setNextFlag(4);
     }
 
+    /**
+     * Boolean to prevent two different Food Stations from being consumed in the
+     * same tick
+     * Boolean Flag
+     */
     private boolean foodTick = false;
 
     public void collideFoodStation() {
+        System.out.println("Looking for food");
+
         // prevent two consumptions in one tick
         if (this.foodTick == false) {
             return;
@@ -202,7 +275,7 @@ public class GameWorld {
             i++;
         }
         ((Ant) this.gameObjects.get(antTag))
-                .increaseFoodLevel(((FoodStation) gameObjects.get(foodStationTag + i))
+                .incrementFoodLevel(((FoodStation) gameObjects.get(foodStationTag + i))
                         .consume(((FoodStation) gameObjects.get(foodStationTag + i)).getCapacity()));
         this.numOfFoodStations++;
         this.gameObjects.put((foodStationTag + this.numOfFoodStations),
@@ -211,10 +284,13 @@ public class GameWorld {
     }
 
     public void collideSpider() {
+        System.out.println("Look out for 8 legs");
         ((Ant) this.gameObjects.get(antTag)).takeDamage(1);
     }
 
     public void tick() {
+        System.out.println("Time has elapsed");
+
         foodTick = true;
         for (GameObject go : gameObjects.values()) {
             go.tick();
@@ -256,8 +332,15 @@ public class GameWorld {
         }
     }
 
-    // Exit condition
+    // Exit condition //
 
+    /**
+     * Boolean for entering Y/N confirm
+     * Boolean Flag
+     * 
+     * @True in Exit state
+     * @False in normal state
+     */
     private boolean inExit = false;
 
     public void exit() {
@@ -288,6 +371,11 @@ public class GameWorld {
         this.inExit = false;
     }
 
+    /**
+     * @return
+     * @True if in exit state
+     * @False if in normal state
+     */
     public boolean inExit() {
         return this.inExit;
     }

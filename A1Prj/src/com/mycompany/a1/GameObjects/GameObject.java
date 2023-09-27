@@ -45,10 +45,11 @@ public abstract class GameObject {
         return this.size;
     }
 
-    public void setSize(Integer newSize) {
+    protected void setSize(Integer newSize) {
+        // size can't be less than 1 or more than equal to 1000
         if (newSize < 1) {
             newSize = 1;
-        } else if (newSize > 1000) {
+        } else if (newSize >= 1000) {
             newSize = 1000;
         }
         this.size = newSize;
@@ -62,7 +63,7 @@ public abstract class GameObject {
         return location;
     }
 
-    public boolean setLocation(Point newLocation) {
+    protected boolean setLocation(Point newLocation) {
         location = newLocation;
         return true;
     }
@@ -71,7 +72,7 @@ public abstract class GameObject {
         return myColor;
     }
 
-    public boolean setColor(int newColor) {
+    protected boolean setColor(int newColor) {
         myColor = newColor;
         return true;
     }
@@ -87,7 +88,7 @@ public abstract class GameObject {
     // Class Statics //
 
     /**
-     * Puts object in bounds if horribly out of bounds.
+     * Guarantee to put object in bounds.
      * Should not be used for bump checking
      * 
      * @param GameObject
@@ -96,6 +97,7 @@ public abstract class GameObject {
         // TODO: Move to GameWorld.
         // This is more of a GameWorld responsibility than a GameObject
         // responsibility
+        // also clean this up, use mod to restrict the values.
         if (go.location.getX() > GameWorld.getWorldMax().getX()) {
             Integer tmpX = new Integer(Math.round(go.location.getX()) % Math.round(GameWorld.getWorldMax().getX()));
             go.location.setX((float) tmpX.doubleValue());
@@ -118,11 +120,21 @@ public abstract class GameObject {
         }
     }
 
+    /**
+     * @param go
+     * @return
+     * @True if GameObject in bounds
+     * @False if GameObject out of bounds
+     */
     public static boolean inBoundsCheck(GameObject go) {
         // TODO: Move to GameWorld.
         return GameObject.inBoundsCheck(go.getLocation());
     }
 
+    /**
+     * @return true if the point is in the realm of the world
+     * @param pnt
+     */
     public static boolean inBoundsCheck(Point pnt) {
         // TODO: Move to GameWorld.
         if (pnt.getX() > GameWorld.getWorldMax().getX()) {
