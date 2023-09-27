@@ -18,10 +18,16 @@ public class Flag extends Fixed {
         // Flags are Orange
         this.setColor(ColorUtil.argb(255, 255, 165, 0));
         GameObject.putInBounds(this);
+
+        // TODO: put it into static object to assign flag numbers
+        // Insures that each flag is given different numbers (so long as not threaded)
         this.flagNumber = Flag.sequenceNumber;
         Flag.sequenceNumber += 1;
     }
 
+    /**
+     * @return flag number
+     */
     public int getFlagNumber() {
         return flagNumber;
     }
@@ -48,6 +54,9 @@ public class Flag extends Fixed {
         return "" + parent + " seqNum=" + this.getFlagNumber() + "";
     }
 
+    /**
+     * Does nothing during tick
+     */
     @Override
     public void tick() {
 

@@ -46,9 +46,10 @@ public abstract class GameObject {
     }
 
     protected void setSize(Integer newSize) {
+        // size can't be less than 1 or more than equal to 1000
         if (newSize < 1) {
             newSize = 1;
-        } else if (newSize > 1000) {
+        } else if (newSize >= 1000) {
             newSize = 1000;
         }
         this.size = newSize;
@@ -87,7 +88,7 @@ public abstract class GameObject {
     // Class Statics //
 
     /**
-     * Puts object in bounds if horribly out of bounds.
+     * Guarantee to put object in bounds.
      * Should not be used for bump checking
      * 
      * @param GameObject
@@ -119,11 +120,21 @@ public abstract class GameObject {
         }
     }
 
+    /**
+     * @param go
+     * @return
+     * @True if GameObject in bounds
+     * @False if GameObject out of bounds
+     */
     public static boolean inBoundsCheck(GameObject go) {
         // TODO: Move to GameWorld.
         return GameObject.inBoundsCheck(go.getLocation());
     }
 
+    /**
+     * @return true if the point is in the realm of the world
+     * @param pnt
+     */
     public static boolean inBoundsCheck(Point pnt) {
         // TODO: Move to GameWorld.
         if (pnt.getX() > GameWorld.getWorldMax().getX()) {

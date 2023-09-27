@@ -22,13 +22,22 @@ public abstract class Movable extends GameObject {
         return this.foodLevel;
     }
 
+    /**
+     * Food Level can not be less than 0
+     * 
+     * @param newFoodLevel
+     */
     protected void setFoodLevel(int newFoodLevel) {
+        // food level can't be less than 0
         if (newFoodLevel < 0) {
             newFoodLevel = 0;
         }
         this.foodLevel = newFoodLevel;
     }
 
+    /**
+     * @return which way the object is facing, 0 North/Up, 90 East/Right, and so on.
+     */
     protected int getHeading() {
         return this.heading;
     }
@@ -63,11 +72,16 @@ public abstract class Movable extends GameObject {
      *         <li>if speed is 0 and is inbounds, will return true</li>
      *         </ul>
      * 
+     * @note If Moveable object does not have a food level, ie 0 or less, the object
+     *       will not move
+     * 
      */
     public boolean move() {
-        if (this.foodLevel == 0) {
+        // Object can not move if:
+        if (this.foodLevel <= 0) {
             return false;
         }
+
         int theta = 90 - heading;
         float delX = (float) Math.cos(Math.toRadians((double) theta));
         float delY = (float) Math.sin(Math.toRadians((double) theta));
@@ -75,9 +89,12 @@ public abstract class Movable extends GameObject {
         delY *= this.speed;
         delX += this.getLocation().getX();
         delY += this.getLocation().getY();
+
+        // Object will not move out of bounds
         if (GameObject.inBoundsCheck(new Point(delX, delY)) == false) {
             return false;
         }
+
         this.setLocation(new Point(delX, delY));
         return true;
     }
@@ -94,18 +111,30 @@ public abstract class Movable extends GameObject {
      * </ul>
      * 
      * @param inc
-     * @return
+     * @return true
      */
-    public boolean increaseHeading(int inc) {
+    public boolean incrementHeading(int inc) {
         this.setHeading(this.heading + inc);
         return true;
     }
 
-    public boolean increaseFoodLevel(int inc) {
+    /**
+     * Increments Food level, can go up or down depending on positive or negative
+     * increments
+     * 
+     * @param inc
+     * @return true
+     */
+    public boolean incrementFoodLevel(int inc) {
         this.setFoodLevel(this.foodLevel + inc);
         return true;
     }
 
+    /**
+     * Sets speed to 0
+     * 
+     * @return True
+     */
     public boolean resetSpeed() {
         this.speed = 0;
         return true;
