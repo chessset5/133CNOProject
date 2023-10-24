@@ -15,11 +15,12 @@ public class Ant extends Movable implements IFoodie {
      * True if flag was already set this tick, false otherwise
      */
     private boolean flagTick = false;
+
     /**
      * True if damage was taken on this tick, false otherwise
      * TODO: decide if want to remove, two attackers same frame.
      */
-    private boolean damageTick = false;
+    // private boolean damageTick = false;
 
     public Ant(Point firstLocation, int firstHeading, int firstSpeed) {
         super();
@@ -122,7 +123,7 @@ public class Ant extends Movable implements IFoodie {
     @Override
     public void tick() {
         this.flagTick = true;
-        this.damageTick = true;
+        // this.damageTick = true;
 
         if (this.foodConsumptionTick) {
             this.foodConsumptionRate = consumptionRateAtTick;
@@ -187,10 +188,11 @@ public class Ant extends Movable implements IFoodie {
      */
     public boolean takeDamage(int damage) {
         // Will not take the same damage in one tick
-        // currently one attacker. TODO: change or remove later
-        if (this.damageTick == false) {
-            return false;
-        }
+        // currently one attacker.
+        // TODO: change or remove later
+        // if (this.damageTick == false) {
+        // return false;
+        // }
         this.incrementHealthLevel(-1 * damage);
 
         // adding red to visualize damage
@@ -207,7 +209,7 @@ public class Ant extends Movable implements IFoodie {
         this.setColor(ColorUtil.argb(255, red, green, blue));
 
         // prevent double tick damage
-        this.damageTick = false;
+        // this.damageTick = false;
         return true;
     }
 
