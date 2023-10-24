@@ -1,8 +1,8 @@
-package com.mycompany.a1.GameObjects.Fixed;
+package com.mycompany.a2.GameObjects.Fixed;
 
 // Code Name One libraries
 import com.codename1.charts.util.ColorUtil;
-import com.mycompany.a1.GameObjects.GameObject;
+import com.mycompany.a2.GameObjects.GameObject;
 import com.codename1.charts.models.Point;
 
 public class Flag extends Fixed {

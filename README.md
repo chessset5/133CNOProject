@@ -557,13 +557,13 @@ o Java interface names should start with the letter “I” (e.g., IFoodie).
   project following the instructions given at “2 – Introduction to Mobile App Development and
   CN1” lecture notes posted at Canvas (Steps for Eclipse: 1) File → New → Project →
   Codename One Project. 2) Give a project name “A1Prj” and uncheck “Java 8 project” 3) Hit
-  “Next”. 4) Give a main class name “Starter”, package name “com.mycompany.a1”, and
+  “Next”. 4) Give a main class name “Starter”, package name “com.mycompany.a2”, and
   select a “native” theme, and “Hello World(Bare Bones)” template (for manual GUI building). 5) Hit “Finish”.). Further, **_you must verify that your program works properly from the_**
   **_command prompt_** before submitting it to Canvas: First make sure that the A1Prj.jar file is
   up-to-date. Then get into the A1Prj directory and type (all in one line) the following for
   Windows machines:
 
-## java -cp dist\A1Prj.jar;JavaSE.jar com.codename1.impl.javase.Simulator com.mycompany.a1.Starter
+## java -cp dist\A1Prj.jar;JavaSE.jar com.codename1.impl.javase.Simulator com.mycompany.a2.Starter
 
 ```
 For the command line arguments of Mac OS/Linux machines please refer to the class

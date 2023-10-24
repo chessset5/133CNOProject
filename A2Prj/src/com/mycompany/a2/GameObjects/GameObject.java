@@ -1,4 +1,4 @@
-package com.mycompany.a1.GameObjects;
+package com.mycompany.a2.GameObjects;
 
 //Code Name One Libraries
 import com.codename1.charts.models.Point;
@@ -9,7 +9,7 @@ import java.util.Random;
 import java.lang.Math;
 
 // My libraries
-import com.mycompany.a1.GameWorld;
+import com.mycompany.a2.GameWorld;
 
 /**
  * GameObject. All the objects on the map

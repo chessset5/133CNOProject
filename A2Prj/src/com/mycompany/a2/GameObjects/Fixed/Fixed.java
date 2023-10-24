@@ -1,7 +1,7 @@
-package com.mycompany.a1.GameObjects.Fixed;
+package com.mycompany.a2.GameObjects.Fixed;
 
 import com.codename1.charts.models.Point;
-import com.mycompany.a1.GameObjects.GameObject;
+import com.mycompany.a2.GameObjects.GameObject;
 
 public abstract class Fixed extends GameObject {
 

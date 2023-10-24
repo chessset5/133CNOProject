@@ -1,13 +1,13 @@
-package com.mycompany.a1;
+package com.mycompany.a2;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Hashtable;
 
 import com.codename1.charts.models.Point;
-import com.mycompany.a1.GameObjects.*;
-import com.mycompany.a1.GameObjects.Fixed.*;
-import com.mycompany.a1.GameObjects.Movable.*;
+import com.mycompany.a2.GameObjects.*;
+import com.mycompany.a2.GameObjects.Fixed.*;
+import com.mycompany.a2.GameObjects.Movable.*;
 
 public class GameWorld {
     private int lives;

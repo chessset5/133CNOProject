@@ -1,4 +1,4 @@
-package com.mycompany.a1.GameObjects.Fixed;
+package com.mycompany.a2.GameObjects.Fixed;
 
 import com.codename1.charts.util.ColorUtil;
 

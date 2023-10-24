@@ -1,7 +1,7 @@
-package com.mycompany.a1.GameObjects.Movable;
+package com.mycompany.a2.GameObjects.Movable;
 
 import com.codename1.charts.models.Point;
-import com.mycompany.a1.GameObjects.GameObject;
+import com.mycompany.a2.GameObjects.GameObject;
 
 public abstract class Movable extends GameObject {
 

@@ -1,4 +1,4 @@
-package com.mycompany.a1.GameObjects.Movable;
+package com.mycompany.a2.GameObjects.Movable;
 
 public class Spider extends Movable {
 
