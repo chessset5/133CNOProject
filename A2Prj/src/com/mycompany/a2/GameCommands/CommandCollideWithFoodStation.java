@@ -1,5 +1,7 @@
 package com.mycompany.a2.GameCommands;
 
-public class CommandCollideWithFoodStation {
+import com.codename1.ui.Command;
+
+public class CommandCollideWithFoodStation extends Command {
 
 }

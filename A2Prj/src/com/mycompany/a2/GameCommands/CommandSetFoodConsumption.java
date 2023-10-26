@@ -1,5 +1,7 @@
 package com.mycompany.a2.GameCommands;
 
-public class CommandSetFoodConsumption {
+import com.codename1.ui.Command;
+
+public class CommandSetFoodConsumption extends Command {
 
 }

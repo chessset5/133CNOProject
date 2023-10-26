@@ -19,6 +19,9 @@ public class GameWorld extends Observable {
     private int numOfFoodStations;
     private boolean soundOn;
 
+    private int accelerationRate = 3;
+    private int turnRate = 15;
+
     // Hash Keys for objects
     private String flagTag = "Flag";
     private String antTag = "Ant";
@@ -192,6 +195,12 @@ public class GameWorld extends Observable {
         this.restartInitObjects();
     }
 
+    public void setSound(boolean sound) {
+        this.soundOn = sound;
+        this.setChanged();
+        this.notifyObservers();
+    }
+
     // key presses //
 
     /**
@@ -199,15 +208,15 @@ public class GameWorld extends Observable {
      */
     public void accelerate() {
         System.out.println("accelerate");
-        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(3);
+        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(accelerationRate);
     }
 
     /**
      * decreases player ant's speed to 0
      */
     public void brake() {
-        System.out.println("braked");
-        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-3);
+        System.out.println("braking");
+        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-1 * accelerationRate);
     }
 
     /**
@@ -215,7 +224,7 @@ public class GameWorld extends Observable {
      */
     public void left() {
         System.out.println("turned left");
-        ((Ant) this.gameObjects.get(antTag)).incrementHeading(-15);
+        ((Ant) this.gameObjects.get(antTag)).incrementHeading(-1 * turnRate);
     }
 
     /**
@@ -223,7 +232,7 @@ public class GameWorld extends Observable {
      */
     public void right() {
         System.out.println("turned right");
-        ((Ant) this.gameObjects.get(antTag)).incrementHeading(15);
+        ((Ant) this.gameObjects.get(antTag)).incrementHeading(turnRate);
     }
 
     /**
@@ -234,24 +243,9 @@ public class GameWorld extends Observable {
         ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(rate);
     }
 
-    public void collideFlag1() {
-        System.out.println("Flag1 Hit");
-        ((Ant) this.gameObjects.get(antTag)).setNextFlag(1);
-    }
-
-    public void collideFlag2() {
-        System.out.println("Flag2 Hit");
-        ((Ant) this.gameObjects.get(antTag)).setNextFlag(2);
-    }
-
-    public void collideFlag3() {
-        System.out.println("Flag3 Hit");
-        ((Ant) this.gameObjects.get(antTag)).setNextFlag(3);
-    }
-
-    public void collideFlag4() {
-        System.out.println("Flag4 Hit");
-        ((Ant) this.gameObjects.get(antTag)).setNextFlag(4);
+    public void collideFlag(int flagNum) {
+        System.out.println("Flag" + ((Integer) flagNum).toString() + "was stepped over");
+        ((Ant) this.gameObjects.get(antTag)).setNextFlag(flagNum);
     }
 
     /**

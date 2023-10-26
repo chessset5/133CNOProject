@@ -1,5 +1,7 @@
 package com.mycompany.a2.GameCommands;
 
-public class CommandCollideWithSpider {
+import com.codename1.ui.Command;
+
+public class CommandCollideWithSpider extends Command {
 
 }
