@@ -1,15 +1,16 @@
 package com.mycompany.a2;
 
 import com.codename1.ui.Form;
+import com.codename1.ui.Button;
+import com.codename1.ui.CheckBox;
+import com.codename1.ui.Container;
+import com.codename1.ui.Toolbar;
+import com.codename1.ui.layouts.BorderLayout;
+import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.plaf.Border;
+import com.codename1.charts.util.ColorUtil;
 
-import com.codename1.ui.events.ActionListener;
-import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
-import com.codename1.ui.events.ActionEvent;
-import java.lang.String;
-
-import com.mycompany.a2.MapView;
-import com.mycompany.a2.ScoreView;
+import com.mycompany.a2.GameCommands.*;
 
 public class Game extends Form {
     private GameWorld gw;
@@ -27,9 +28,33 @@ public class Game extends Form {
         // control containers for the buttons, add buttons to the control containers,
         // add commands to the buttons, and add control containers, MapView, and
         // ScoreView to the form
+        this.setLayout(new BorderLayout());
+        this.add(BorderLayout.NORTH, sv);
+        this.add(BorderLayout.CENTER, mv);
+
         this.show();
         // ... // code here to query MapView’s width and height and set them as world’s
         // width and height
+
         gw.init(); // initialize world
     }
+
+    private void initNORTHToolBar() {
+        Toolbar toolBar = new Toolbar();
+        this.setToolbar(toolBar);
+
+        toolBar.setTitle("TheJourneyGame");
+
+        // add commands
+    };
+
+    private Button setStyle(Button button) {
+        button.getAllStyles().setBgTransparency(255);
+        button.getAllStyles().setPadding(TOP, 5);
+        button.getAllStyles().setPadding(BOTTOM, 5);
+        button.getUnselectedStyle().setBgColor(ColorUtil.BLUE);
+        button.getAllStyles().setFgColor(ColorUtil.WHITE);
+        button.getAllStyles().setBorder(Border.createLineBorder(3, ColorUtil.BLACK));
+        return button;
+    };
 }

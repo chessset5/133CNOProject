@@ -109,7 +109,7 @@ public class Ant extends Movable implements IFoodie {
      * @false if given flag was invalid
      */
     public boolean setNextFlag(int flag) {
-        // will only activatte after tick, if tick activated then
+        // will only activate after tick, if tick activated then
         if (((flag - 1) != lastFlagReached) || (this.flagTick == false)) {
             return false;
         }
