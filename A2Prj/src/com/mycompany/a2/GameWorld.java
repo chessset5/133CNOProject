@@ -2,13 +2,14 @@ package com.mycompany.a2;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.Observable;
+import java.util.Random;
 
 import com.codename1.charts.models.Point;
 import com.mycompany.a2.GameObjects.*;
 import com.mycompany.a2.GameObjects.Fixed.*;
 import com.mycompany.a2.GameObjects.Movable.*;
+import com.mycompany.a2.Interfaces.IIterator;
 
 public class GameWorld extends Observable {
     private int lives;
@@ -17,26 +18,34 @@ public class GameWorld extends Observable {
     private int numOfFlags;
     private int numOfSpiders;
     private int numOfFoodStations;
-    private boolean soundOn;
+    private boolean soundOn; // ignore warning, in use
+    private Random rand;
+
+    // Stuff for ant
+    private Point firstFlagLocation;
+    private int antFirstHeading;
+    private int antFirstSpeed;
 
     private int accelerationRate = 3;
     private int turnRate = 15;
 
     // Hash Keys for objects
     private String flagTag = "Flag";
-    private String antTag = "Ant";
+    private String antTag = "Ant"; // ignore warning, in use
     private String spiderTag = "Spider";
     private String foodStationTag = "FoodStation";
 
     /**
      * Object to hold all the GameObjects
-     * previously named gameObjects
+     * previously Hashtable<String, GameObject> gameObjects = new Hashtable<String,
+     * GameObject>();
      */
-    Hashtable<String, GameObject> gameObjects = new Hashtable<String, GameObject>();
+    private GameObjectCollection gameObjects;
 
     // Init Methods
 
     public void init() {
+        this.rand = new Random();
         this.lives = 3;
         this.clock = 0;
         this.soundOn = false;
@@ -46,37 +55,44 @@ public class GameWorld extends Observable {
     }
 
     private void initObjects() {
-        // Flags
-        this.gameObjects.put("Flag1", new Flag(new Point(50.0f, 50.0f)));
-        this.gameObjects.put("Flag2", new Flag(new Point(350.0f, 550.0f)));
-        this.gameObjects.put("Flag3", new Flag(new Point(400.0f, 900.0f)));
-        this.gameObjects.put("Flag4", new Flag(new Point(700.0f, 200.0f)));
-        this.gameObjects.get("Flag1").setName("Flag1");
-        this.gameObjects.get("Flag2").setName("Flag2");
-        this.gameObjects.get("Flag3").setName("Flag3");
-        this.gameObjects.get("Flag4").setName("Flag4");
+        gameObjects = new GameObjectCollection();
 
+        // Flags
+        // TODO: Make sure flags are in bounds
         this.numOfFlags = 4;
+        for (Integer i = 0; i < this.numOfFlags; i++) {
+            Point point = this.randomPoint();
+            if (i == 0) {
+                firstFlagLocation = point;
+            }
+            GameObject flag = new Flag(point);
+            flag.setName(flagTag + i);
+            this.gameObjects.add(flag);
+        }
 
         // Ant
         // settings to Flag1 position, heading 0, and speed 10
-        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation(), 0, 10));
-        this.gameObjects.get(antTag).setName(antTag);
+        SingleAnt.getAnt().setLocation(firstFlagLocation);
+        SingleAnt.getAnt().setHeading(antFirstHeading);
+        SingleAnt.getAnt().setSpeed(antFirstSpeed);
 
         // Spiders
         this.numOfSpiders = 3;
         for (int i = 1; i < this.numOfSpiders; i++) {
-            this.gameObjects.put((spiderTag + i), new Spider());
-            this.gameObjects.get((spiderTag + i)).setName((spiderTag + i));
+            GameObject gameObject = new Spider();
+            gameObject.setName(spiderTag + i);
+            this.gameObjects.add(gameObject);
         }
 
         // Food Stations
-        this.numOfFoodStations = 0;
-        for (int i = 1; i < 5; i++) {
-            this.gameObjects.put((foodStationTag + i), new FoodStation());
-            this.gameObjects.get((foodStationTag + i)).setName((foodStationTag + i));
-            this.numOfFoodStations++;
+        this.numOfFoodStations = 5;
+        for (int i = 1; i < this.numOfFoodStations; i++) {
+            GameObject gameObject = new FoodStation();
+            gameObject.setName(foodStationTag + i);
+            this.gameObjects.add(gameObject);
         }
+        this.setChanged();
+        this.notifyObservers();
     }
 
     private void restartInitObjects() {
@@ -90,13 +106,11 @@ public class GameWorld extends Observable {
 
         System.out.println("Resetting Game World");
 
-        // TODO: Find out if this is needed. I believe it is not
-        this.numOfFlags = 4;
-
         // Ant only resets
         // settings to Flag1 position, heading 0, and speed 10
-        this.gameObjects.put(antTag, new Ant(gameObjects.get("Flag1").getLocation(), 0, 10));
-        this.gameObjects.get(antTag).setName(antTag);
+        SingleAnt.getAnt().setLocation(firstFlagLocation);
+        SingleAnt.getAnt().setHeading(antFirstHeading);
+        SingleAnt.getAnt().setSpeed(antFirstSpeed);
 
         this.hasChanged();
         this.notifyObservers(this);
@@ -124,6 +138,17 @@ public class GameWorld extends Observable {
         return new Point(1000.0f, 1000.0f);
     }
 
+    // Random point for flag because it didn't have the functionality
+    private Point randomPoint() {
+        return new Point(this.rand.nextFloat(), this.rand.nextFloat());
+    }
+
+    private Point randomPoint(float xmin, float xmax, float ymin, float ymax) {
+        float x = xmin + (this.rand.nextFloat() * (xmax - xmin));
+        float y = ymin + (this.rand.nextFloat() * (ymax - ymin));
+        return new Point(x, y);
+    }
+
     // Game states
 
     /**
@@ -131,7 +156,7 @@ public class GameWorld extends Observable {
      *         false otherwise
      */
     public boolean winCondition() {
-        return ((Ant) this.gameObjects.get(antTag)).getLastFlag() == this.numOfFlags;
+        return SingleAnt.getAnt().getLastFlag() == this.numOfFlags;
     }
 
     /**
@@ -148,11 +173,11 @@ public class GameWorld extends Observable {
      * @note restart condition is defined as the ant having 0 health or 0 food level
      */
     public boolean restartCondition() {
-        if (((Ant) this.gameObjects.get(antTag)).isAntDead()) {
+        if (SingleAnt.getAnt().isAntDead()) {
             System.out.println("\nAnt Died");
             return true;
         }
-        if (((Ant) this.gameObjects.get(antTag)).isStarved()) {
+        if (SingleAnt.getAnt().isStarved()) {
             System.out.println("\nAnt starved");
             return true;
         }
@@ -171,7 +196,7 @@ public class GameWorld extends Observable {
      * True disables all keys but y.
      * Used for preventing the game from continuing once all lives are lost.
      */
-    private boolean inLooseExit = false;
+    // private boolean inLooseExit = false;
 
     /**
      * Loose Print Out
@@ -184,7 +209,7 @@ public class GameWorld extends Observable {
         } catch (InterruptedException e) {
         }
         System.out.println("\nPlease press y to exit");
-        this.inLooseExit = true;
+        // this.inLooseExit = true;
         this.inExit = true;
     }
 
@@ -197,6 +222,7 @@ public class GameWorld extends Observable {
 
     public void setSound(boolean sound) {
         this.soundOn = sound;
+
         this.setChanged();
         this.notifyObservers();
     }
@@ -208,7 +234,7 @@ public class GameWorld extends Observable {
      */
     public void accelerate() {
         System.out.println("accelerate");
-        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(accelerationRate);
+        SingleAnt.getAnt().increaseSpeed(accelerationRate);
     }
 
     /**
@@ -216,7 +242,7 @@ public class GameWorld extends Observable {
      */
     public void brake() {
         System.out.println("braking");
-        ((Ant) this.gameObjects.get(antTag)).increaseSpeed(-1 * accelerationRate);
+        SingleAnt.getAnt().increaseSpeed(-1 * accelerationRate);
     }
 
     /**
@@ -224,7 +250,7 @@ public class GameWorld extends Observable {
      */
     public void left() {
         System.out.println("turned left");
-        ((Ant) this.gameObjects.get(antTag)).incrementHeading(-1 * turnRate);
+        SingleAnt.getAnt().incrementHeading(-1 * turnRate);
     }
 
     /**
@@ -232,7 +258,7 @@ public class GameWorld extends Observable {
      */
     public void right() {
         System.out.println("turned right");
-        ((Ant) this.gameObjects.get(antTag)).incrementHeading(turnRate);
+        SingleAnt.getAnt().incrementHeading(turnRate);
     }
 
     /**
@@ -240,12 +266,18 @@ public class GameWorld extends Observable {
      */
     public void setFoodConsumptionRate(int rate) {
         System.out.println("food consumption rate was set to " + rate);
-        ((Ant) this.gameObjects.get(antTag)).setFoodConsumptionRate(rate);
+        SingleAnt.getAnt().setFoodConsumptionRate(rate);
+
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public void collideFlag(int flagNum) {
         System.out.println("Flag" + ((Integer) flagNum).toString() + "was stepped over");
-        ((Ant) this.gameObjects.get(antTag)).setNextFlag(flagNum);
+        SingleAnt.getAnt().setNextFlag(flagNum);
+
+        this.setChanged();
+        this.notifyObservers();
     }
 
     /**
@@ -262,30 +294,58 @@ public class GameWorld extends Observable {
         if (this.foodTick == false) {
             return;
         }
-        int i = 1;
-        while (((FoodStation) gameObjects.get(foodStationTag + i)).getCapacity() == 0) {
-            i++;
+
+        FoodStation lastStation = null;
+
+        IIterator iteratorGameObject = gameObjects.getIterator();
+        while (iteratorGameObject.hasNext()) {
+            GameObject gO = (GameObject) iteratorGameObject.getNext();
+            if (gO instanceof FoodStation) {
+                if (((FoodStation) gO).getCapacity() != 0) {
+                    // found a food station with food
+                    SingleAnt.getAnt()
+                            .incrementFoodLevel(((FoodStation) gO)
+                                    .consume(((FoodStation) gO).getCapacity()));
+                    lastStation = (FoodStation) gO;
+                    break;
+                }
+            }
         }
-        ((Ant) this.gameObjects.get(antTag))
-                .incrementFoodLevel(((FoodStation) gameObjects.get(foodStationTag + i))
-                        .consume(((FoodStation) gameObjects.get(foodStationTag + i)).getCapacity()));
-        this.numOfFoodStations++;
-        this.gameObjects.put((foodStationTag + this.numOfFoodStations),
-                new FoodStation((foodStationTag + this.numOfFoodStations)));
+
+        // If the last station visited ran out of food, add new station
+        if (lastStation != null) {
+            // There was a station with food
+            if (lastStation.getCapacity() == 0) {
+                // All its food was consumed
+                this.numOfFoodStations++;
+                this.gameObjects.put((foodStationTag + this.numOfFoodStations),
+                        new FoodStation((foodStationTag + this.numOfFoodStations)));
+
+            }
+        }
         this.foodTick = false;
+
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public void collideSpider() {
         System.out.println("Look out for 8 legs");
-        ((Ant) this.gameObjects.get(antTag)).takeDamage(1);
+        SingleAnt.getAnt().takeDamage(1);
+
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public void tick() {
         System.out.println("Time has elapsed");
 
         foodTick = true;
-        for (GameObject go : gameObjects.values()) {
-            go.tick();
+
+        IIterator iteratorGameObject = gameObjects.getIterator();
+        while (iteratorGameObject.hasNext()) {
+            GameObject gameObject = (GameObject) iteratorGameObject.getNext();
+            gameObject.tick();
         }
         if (this.winCondition()) {
             this.win();
@@ -301,10 +361,10 @@ public class GameWorld extends Observable {
         System.out.println();
         System.out.println("Lives: " + this.lives);
         System.out.println("Clock: " + this.clock);
-        System.out.println("Ant's Highest Flag: " + ((Ant) this.gameObjects.get(antTag)).getLastFlag());
-        System.out.println("Ant's Current Food Level: " + ((Ant) this.gameObjects.get(antTag)).getFoodLevel());
+        System.out.println("Ant's Highest Flag: " + SingleAnt.getAnt().getLastFlag());
+        System.out.println("Ant's Current Food Level: " + SingleAnt.getAnt().getFoodLevel());
         System.out.println(
-                "Ant's Current Health Level: " + ((Ant) this.gameObjects.get(antTag)).getHealthLevel());
+                "Ant's Current Health Level: " + SingleAnt.getAnt().getHealthLevel());
         System.out.println("Current number of loaded objects: " + this.gameObjects.size());
     }
 
@@ -312,12 +372,16 @@ public class GameWorld extends Observable {
         System.out.println("\nDisplaying Map");
 
         // Stupid way to get all the values to sort
-        // TODO: redo this using maps or something,
         // there has to be a faster or cleaner way
         ArrayList<String> tmpList = new ArrayList<String>();
-        for (GameObject go : this.gameObjects.values()) {
-            tmpList.add(go.toString());
+
+        IIterator iteratorGameObject = gameObjects.getIterator();
+        while (iteratorGameObject.hasNext()) {
+            GameObject gameObject = (GameObject) iteratorGameObject.getNext();
+            tmpList.add(gameObject.toString());
         }
+
+        // everything should be in order already but just in case
         Collections.sort(tmpList);
 
         for (String tmp : tmpList) {
@@ -337,31 +401,35 @@ public class GameWorld extends Observable {
     private boolean inExit = false;
 
     public void exit() {
-        if (this.inExit) {
-            System.out.println("\nKey press denied\nIn exit mode.");
-        }
-        if (this.inLooseExit) {
-            System.out.println("\nKey press denied\nPlease press y to exit.");
-            this.inExit = true;
-            this.inLooseExit = true;
-            return;
-        }
+        System.out.println("this exit method is deprecated");
+        // if (this.inExit) {
+        // System.out.println("\nKey press denied\nIn exit mode.");
+        // }
+        // if (this.inLooseExit) {
+        // System.out.println("\nKey press denied\nPlease press y to exit.");
+        // this.inExit = true;
+        // this.inLooseExit = true;
+        // return;
+        // }
 
-        this.inExit = true;
-        System.out.println("\nDo you wish to exit?\ny/n");
+        // this.inExit = true;
+        // System.out.println("\nDo you wish to exit?\ny/n");
+
     }
 
     public void confirm() {
-        if (this.inExit) {
-            System.exit(0);
-        }
+        System.out.println("this exit method is deprecated");
+        // if (this.inExit) {
+        // System.exit(0);
+        // }
     }
 
     public void deny() {
-        if (this.inExit) {
-            System.out.println("\nn confirmed\nreturning to game world");
-        }
-        this.inExit = false;
+        System.out.println("this exit method is deprecated");
+        // if (this.inExit) {
+        // System.out.println("\nn confirmed\nreturning to game world");
+        // }
+        // this.inExit = false;
     }
 
     /**
