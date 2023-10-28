@@ -14,6 +14,9 @@ public class Flag extends Fixed {
         // setting initial location
         // Flag can not have its location changed once set
         super(startLocation);
+        // make sure flag is in bounds
+        GameObject.putInBounds(this);
+
         this.setSize(10);
         // Flags are Orange
         this.setColor(ColorUtil.argb(255, 255, 165, 0));

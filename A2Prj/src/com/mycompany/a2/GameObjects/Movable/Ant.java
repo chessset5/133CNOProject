@@ -22,16 +22,25 @@ public class Ant extends Movable implements IFoodie {
      */
     // private boolean damageTick = false;
 
+    public Ant() {
+        super();
+        this.antInit();
+    }
+
     public Ant(Point firstLocation, int firstHeading, int firstSpeed) {
         super();
+        this.antInit();
+        this.setSpeed(firstSpeed);
+        this.setHeading(firstHeading);
+        this.setLocation(firstLocation);
+    }
+
+    private void antInit() {
         this.setSize(5);
         this.setHealthLevel(10);
         // Ant Color is Turquoise? what ever this comes out to:
         this.setColor(ColorUtil.argb(255, 0, 255, 255));
-        this.setLocation(firstLocation);
-        this.setHeading(firstHeading);
-        this.lastFlagReached = 1;
-        this.setSpeed(firstSpeed);
+        this.lastFlagReached = 0;
         this.setFoodLevel(100);
         this.setFoodConsumption(0);
     }
@@ -103,6 +112,8 @@ public class Ant extends Movable implements IFoodie {
     }
 
     /**
+     * This will only increment the flag if the flag is last flag + 1
+     * 
      * @param flag
      * @return
      * @true if new flag was set
@@ -110,18 +121,29 @@ public class Ant extends Movable implements IFoodie {
      */
     public boolean setNextFlag(int flag) {
         // will only activate after tick, if tick activated then
-        if (((flag - 1) != lastFlagReached) || (this.flagTick == false)) {
+        if (((flag - 1) != this.lastFlagReached) || (this.flagTick == false)) {
             return false;
         }
-        lastFlagReached = flag;
+        this.lastFlagReached = flag;
         this.flagTick = false;
         return true;
+    }
+
+    /**
+     * Resets the flags of the ant for game world reset or other reason
+     * 
+     * @return true if flags were reset
+     */
+    public boolean restFlags() {
+        this.lastFlagReached = 0;
+        return this.lastFlagReached == 0;
     }
 
     // class overrides //
 
     @Override
     public void tick() {
+        // allows next flag to to be hit
         this.flagTick = true;
         // this.damageTick = true;
 
@@ -224,11 +246,15 @@ public class Ant extends Movable implements IFoodie {
     /**
      * Ant's speed will not be 0
      */
-    @Override
-    protected void setSpeed(int newSpeed) {
+    public void setSpeed(int newSpeed) {
         if (newSpeed < 0) {
             newSpeed = 0;
         }
         super.setSpeed(newSpeed);
+    }
+
+    public boolean setLocation(Point newLocation) {
+        super.setLocation(newLocation);
+        return true;
     }
 }
