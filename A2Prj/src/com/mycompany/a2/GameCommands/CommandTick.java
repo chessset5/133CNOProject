@@ -5,7 +5,8 @@ import com.codename1.ui.events.ActionEvent;
 import com.mycompany.a2.GameWorld;
 
 public class CommandTick extends Command {
-    private static String commandName = "Command_Tick";
+    // private static String commandName = "Command_Tick";
+    private static String commandName = "Tick";
 
     private GameWorld gameWorld;
 

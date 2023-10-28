@@ -5,7 +5,8 @@ import com.codename1.ui.events.ActionEvent;
 import com.mycompany.a2.GameWorld;
 
 public class CommandAccelerate extends Command {
-    private static String commandName = "Command_Accelerate";
+    // private static String commandName = "Command_Accelerate";
+    private static String commandName = "Accelerate";
 
     private GameWorld gameWorld;
 

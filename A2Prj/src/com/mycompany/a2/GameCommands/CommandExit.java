@@ -4,12 +4,12 @@ import com.codename1.ui.Command;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Display;
 import com.codename1.ui.events.ActionEvent;
-import com.mycompany.a2.GameWorld;
 
 public class CommandExit extends Command {
-    private static String commandName = "Command_Exit";
+    // private static String commandName = "Command_Exit";
+    private static String commandName = "Exit";
 
-    public CommandExit(GameWorld newGameWorld) {
+    public CommandExit() {
         super(commandName);
     }
 

@@ -3,12 +3,12 @@ package com.mycompany.a2.GameCommands;
 import com.codename1.ui.Command;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.events.ActionEvent;
-import com.mycompany.a2.GameWorld;
 
 public class CommandHelpInformation extends Command {
-    private static String commandName = "Command_Help_Information";
+    // private static String commandName = "Command_Help_Information";
+    private static String commandName = "Help Information";
 
-    public CommandHelpInformation(GameWorld newGameWorld) {
+    public CommandHelpInformation() {
         super(commandName);
     }
 
@@ -23,6 +23,6 @@ public class CommandHelpInformation extends Command {
                         "Collide with Food Station: f\n" +
                         "Collide with Spider: g\n" +
                         "Tick: t\n",
-                "Ok", null);
+                "close", null);
     }
 }

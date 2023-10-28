@@ -5,7 +5,8 @@ import com.codename1.ui.events.ActionEvent;
 import com.mycompany.a2.GameWorld;
 
 public class CommandLeftTurn extends Command {
-    private static String commandName = "Command_Left_Turn";
+    // private static String commandName = "Command_Left_Turn";
+    private static String commandName = "Left Turn";
 
     private GameWorld gameWorld;
 
