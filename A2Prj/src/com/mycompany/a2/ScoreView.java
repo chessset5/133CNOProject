@@ -10,5 +10,7 @@ import com.codename1.ui.layouts.BoxLayout;
 public class ScoreView extends Container implements Observer {
     public void update(Observable o, Object arg) {
         // code here to update labels from the game/ant state data
+
+        // TODO: Finish
     }
 }
