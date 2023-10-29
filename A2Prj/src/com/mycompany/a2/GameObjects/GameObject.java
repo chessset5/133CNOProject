@@ -137,17 +137,23 @@ public abstract class GameObject {
      */
     public static boolean inBoundsCheck(Point pnt) {
         // TODO: Move to GameWorld.
+
+        // X out of bounds
         if (pnt.getX() > GameWorld.getWorldMax().getX()) {
-            return true;
-        } else if (pnt.getX() < GameWorld.getWorldMax().getX()) {
-            return true;
+            return false;
+        } else if (pnt.getX() < GameWorld.getWorldMin().getX()) {
+            return false;
         }
+
+        // Y out of bounds
         if (pnt.getY() > GameWorld.getWorldMax().getY()) {
-            return true;
-        } else if (pnt.getY() < GameWorld.getWorldMax().getY()) {
-            return true;
+            return false;
+        } else if (pnt.getY() < GameWorld.getWorldMin().getY()) {
+            return false;
         }
-        return false;
+
+        // In bounds
+        return true;
     }
 
     @Override
