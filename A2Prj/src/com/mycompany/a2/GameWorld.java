@@ -232,7 +232,7 @@ public class GameWorld extends Observable {
      */
     public String win() {
         String retString = ("\nGame over, you win!\n" +
-                "Total time: " + winClock);
+                "Total time: " + winClock + '\n');
         System.out.println(retString);
         return retString;
     }
@@ -247,7 +247,7 @@ public class GameWorld extends Observable {
      * Loose Print Out
      */
     public String loose() {
-        String retString = "\nGame over, you failed!";
+        String retString = "\nGame over, you failed!" + '\n';
         System.out.println(retString);
         // System.out.println("\nPlease press y to exit");
         // this.inLooseExit = true;
