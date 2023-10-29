@@ -11,6 +11,10 @@ public class Ant extends Movable implements IFoodie {
     private int maxHealth = 10;
     private int healthLevel;
     private int lastFlagReached;
+    private int antSize = 5;
+    // Ant Color is Turquoise? what ever this comes out to:
+    private int antColor = ColorUtil.argb(255, 0, 255, 255);
+
     /**
      * True if flag was already set this tick, false otherwise
      */
@@ -36,13 +40,14 @@ public class Ant extends Movable implements IFoodie {
     }
 
     private void antInit() {
-        this.setSize(5);
-        this.setHealthLevel(10);
-        // Ant Color is Turquoise? what ever this comes out to:
-        this.setColor(ColorUtil.argb(255, 0, 255, 255));
+        this.setSize(this.antSize);
+        this.setHealthLevel(this.maxHealth);
+        this.setColor(antColor);
         this.lastFlagReached = 0;
         this.setFoodLevel(100);
         this.setFoodConsumption(0);
+        this.setSpeed(0);
+        this.flagTick = true;
     }
 
     // getters setters //
@@ -134,9 +139,14 @@ public class Ant extends Movable implements IFoodie {
      * 
      * @return true if flags were reset
      */
-    public boolean restFlags() {
+    public boolean resetFlags() {
         this.lastFlagReached = 0;
         return this.lastFlagReached == 0;
+    }
+
+    public boolean resetAnt() {
+        this.antInit();
+        return this.resetFlags();
     }
 
     // class overrides //
@@ -178,7 +188,11 @@ public class Ant extends Movable implements IFoodie {
         boolean answer = super.move();
         // if moved
         if (answer) {
-            this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
+            if (this.getSpeed() != 0) {
+                this.setFoodLevel(this.getFoodLevel() - this.foodConsumptionRate);
+            } else {
+                this.setFoodLevel(this.getFoodLevel() - (this.foodConsumptionRate / 4) - 1);
+            }
         }
         // this.setSpeed(tmpSpeed);
         return answer;
@@ -238,8 +252,8 @@ public class Ant extends Movable implements IFoodie {
     @Override
     public String toString() {
         String parent = super.toString();
-        return "" + parent + "\nmaxSpeed=" + this.maximumSpeed
-                + " foodConsumptionRate=" + this.foodConsumptionRate
+        return "" + parent + "\n\tmaxSpeed= " + this.maximumSpeed
+                + " foodConsumptionRate= " + this.foodConsumptionRate
                 + "";
     }
 

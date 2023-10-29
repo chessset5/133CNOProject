@@ -18,8 +18,11 @@ public class GameWorld extends Observable {
     private int numOfFlags;
     private int numOfSpiders;
     private int numOfFoodStations;
-    private boolean soundOn; // ignore warning, in use
+    private boolean soundOn;
     private Random rand;
+
+    // for display printout
+    private String mapString;
 
     // Stuff for ant
     private Point firstFlagLocation;
@@ -31,7 +34,7 @@ public class GameWorld extends Observable {
 
     // Hash Keys for objects
     private String flagTag = "Flag";
-    private String antTag = "Ant"; // ignore warning, in use
+    private String antTag = "Ant";
     private String spiderTag = "Spider";
     private String foodStationTag = "FoodStation";
 
@@ -48,8 +51,10 @@ public class GameWorld extends Observable {
         this.rand = new Random();
         this.lives = 3;
         this.clock = 0;
+        this.winClock = clock;
         this.soundOn = false;
         this.initObjects();
+        this.updateMap();
         this.setChanged();
         this.notifyObservers(this);
     }
@@ -58,7 +63,6 @@ public class GameWorld extends Observable {
         gameObjects = new GameObjectCollection();
 
         // Flags
-        // TODO: Make sure flags are in bounds
         this.numOfFlags = 4;
         for (Integer i = 0; i < this.numOfFlags; i++) {
             Point point = this.randomPoint();
@@ -75,6 +79,8 @@ public class GameWorld extends Observable {
         SingleAnt.getAnt().setLocation(firstFlagLocation);
         SingleAnt.getAnt().setHeading(antFirstHeading);
         SingleAnt.getAnt().setSpeed(antFirstSpeed);
+        SingleAnt.getAnt().setName(antTag);
+        this.collideFlag(1);
 
         // Spiders
         this.numOfSpiders = 3;
@@ -91,8 +97,8 @@ public class GameWorld extends Observable {
             gameObject.setName(foodStationTag + i);
             this.gameObjects.add(gameObject);
         }
-        this.setChanged();
-        this.notifyObservers();
+
+        tick();
     }
 
     private void restartInitObjects() {
@@ -104,16 +110,42 @@ public class GameWorld extends Observable {
             return;
         }
 
-        System.out.println("Resetting Game World");
-
         // Ant only resets
         // settings to Flag1 position, heading 0, and speed 10
+        SingleAnt.getAnt().resetAnt();
         SingleAnt.getAnt().setLocation(firstFlagLocation);
         SingleAnt.getAnt().setHeading(antFirstHeading);
         SingleAnt.getAnt().setSpeed(antFirstSpeed);
+        this.collideFlag(1);
 
         this.hasChanged();
         this.notifyObservers(this);
+        System.out.println("World Rest");
+    }
+
+    // getters
+    public int getLife() {
+        return this.lives;
+    }
+
+    public int getclock() {
+        return this.clock;
+    }
+
+    public int getCurFlag() {
+        return SingleAnt.getAnt().getLastFlag();
+    }
+
+    public int getFood() {
+        return SingleAnt.getAnt().getFoodLevel();
+    }
+
+    public int getHealth() {
+        return SingleAnt.getAnt().getHealthLevel();
+    }
+
+    public boolean getSound() {
+        return soundOn;
     }
 
     // word states
@@ -156,7 +188,11 @@ public class GameWorld extends Observable {
      *         false otherwise
      */
     public boolean winCondition() {
-        return SingleAnt.getAnt().getLastFlag() == this.numOfFlags;
+        boolean didWin = SingleAnt.getAnt().getLastFlag() == this.numOfFlags;
+        if (didWin && (winClock == 0)) {
+            winClock = clock;
+        }
+        return didWin;
     }
 
     /**
@@ -187,9 +223,11 @@ public class GameWorld extends Observable {
     /**
      * Win Print out
      */
-    public void win() {
-        System.out.println(("\nGame over, you win!\n" +
-                "Total time: " + winClock));
+    public String win() {
+        String retString = ("\nGame over, you win!\n" +
+                "Total time: " + winClock);
+        System.out.println(retString);
+        return retString;
     }
 
     /**
@@ -201,27 +239,28 @@ public class GameWorld extends Observable {
     /**
      * Loose Print Out
      */
-    public void loose() {
-        System.out.println("\nGame over, you failed!");
-        // 3 second sleep
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-        }
-        System.out.println("\nPlease press y to exit");
+    public String loose() {
+        String retString = "\nGame over, you failed!";
+        System.out.println(retString);
+        // System.out.println("\nPlease press y to exit");
         // this.inLooseExit = true;
         this.inExit = true;
+        return retString;
     }
 
     /**
      * Restarts Game World without resetting game
      */
-    public void restart() {
+    public String restart() {
         this.restartInitObjects();
+        String retString = "\nResetting Game World\n";
+        System.out.println(retString);
+        return retString;
     }
 
     public void setSound(boolean sound) {
         this.soundOn = sound;
+        System.out.println("Sound is " + (soundOn ? "on" : "off"));
 
         this.setChanged();
         this.notifyObservers();
@@ -273,7 +312,7 @@ public class GameWorld extends Observable {
     }
 
     public void collideFlag(int flagNum) {
-        System.out.println("Flag" + ((Integer) flagNum).toString() + "was stepped over");
+        System.out.println("Flag " + ((Integer) flagNum).toString() + " was stepped over");
         SingleAnt.getAnt().setNextFlag(flagNum);
 
         this.setChanged();
@@ -342,6 +381,8 @@ public class GameWorld extends Observable {
 
         foodTick = true;
 
+        SingleAnt.getAnt().tick();
+
         IIterator iteratorGameObject = gameObjects.getIterator();
         while (iteratorGameObject.hasNext()) {
             GameObject gameObject = (GameObject) iteratorGameObject.getNext();
@@ -355,6 +396,9 @@ public class GameWorld extends Observable {
         }
 
         this.clock++;
+        this.updateMap();
+        this.setChanged();
+        this.notifyObservers();
     }
 
     public void display() {
@@ -369,7 +413,19 @@ public class GameWorld extends Observable {
     }
 
     public void map() {
-        System.out.println("\nDisplaying Map");
+        // System.out.println("\nDisplaying Map");
+
+        this.mapString = "";
+
+        if (this.winCondition()) {
+            this.mapString += this.win();
+        }
+        if (this.looseCondition()) {
+            this.mapString += this.loose();
+        }
+        if (this.restartCondition()) {
+            this.mapString += this.restart();
+        }
 
         // Stupid way to get all the values to sort
         // there has to be a faster or cleaner way
@@ -383,10 +439,25 @@ public class GameWorld extends Observable {
 
         // everything should be in order already but just in case
         Collections.sort(tmpList);
+        // Put ant on top
+        tmpList.add(0, SingleAnt.getAnt().toString());
 
+        // previously printed to consol, now adding to string
         for (String tmp : tmpList) {
-            System.out.println(tmp);
+            // System.out.println(tmp);
+            mapString += tmp + "\n";
         }
+
+        setChanged();
+        notifyObservers();
+    }
+
+    public void updateMap() {
+        this.map();
+    }
+
+    public String getMap() {
+        return this.mapString;
     }
 
     // Exit condition //

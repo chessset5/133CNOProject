@@ -35,10 +35,10 @@ public class Game extends Form {
         this.add(BorderLayout.CENTER, mv);
 
         // setup GUI
-        hamburgerMenu();
-        buttonsLeft();
-        buttonsRight();
-        buttonsBottom();
+        this.toolBarMenu();
+        this.buttonsLeft();
+        this.buttonsRight();
+        this.buttonsBottom();
 
         // set food consumption
         CommandSetFoodConsumption commandSetFoodConsumption = new CommandSetFoodConsumption(gw);
@@ -48,10 +48,13 @@ public class Game extends Form {
         // ... // code here to query MapView’s width and height and set them as world’s
         // width and height
 
+        // TODO: properly set the height and width
+
         gw.init(); // initialize world
+
     }
 
-    private void hamburgerMenu() {
+    private void toolBarMenu() {
         Toolbar toolbar = new Toolbar();
         this.setToolbar(toolbar);
         toolbar.setTitle("TheJourneyGame");
@@ -75,6 +78,7 @@ public class Game extends Form {
 
         // Help command
         CommandHelpInformation commandHelpInformation = new CommandHelpInformation();
+        toolbar.addCommandToRightBar(commandHelpInformation);
         toolbar.addCommandToSideMenu(commandHelpInformation);
 
         // Exit command

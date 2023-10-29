@@ -1,7 +1,5 @@
 package com.mycompany.a2;
 
-import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.Vector;
 
 import com.mycompany.a2.GameObjects.GameObject;

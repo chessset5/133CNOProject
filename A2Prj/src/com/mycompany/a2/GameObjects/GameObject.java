@@ -154,8 +154,8 @@ public abstract class GameObject {
     public String toString() {
         double xRound = Math.round(this.location.getX() * 10.0f) / 10.0;
         double yRound = Math.round(this.location.getY() * 10.0f) / 10.0;
-        return "" + name + " loc=" + xRound + "," + yRound +
-                " color: " + "[" + ColorUtil.red(myColor) + ","
+        return "" + name + " loc= (" + xRound + " , " + yRound +
+                ") color: " + "[" + ColorUtil.red(myColor) + ","
                 + ColorUtil.green(myColor) + ","
                 + ColorUtil.blue(myColor) + "]";
     }
