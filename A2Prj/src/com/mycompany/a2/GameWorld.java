@@ -394,10 +394,12 @@ public class GameWorld extends Observable {
 
         if (this.winCondition()) {
             this.win();
+            this.updateMap();
             return;
         }
         if (this.looseCondition()) {
             this.loose();
+            this.updateMap();
             return;
         }
         if (this.restartCondition()) {
