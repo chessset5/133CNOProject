@@ -435,13 +435,13 @@ public class GameWorld extends Observable {
         this.mapString = "";
 
         if (this.winCondition()) {
-            this.mapString += this.win();
+            this.mapString += this.win() + "\n\n";
         }
         if (this.looseCondition()) {
-            this.mapString += this.loose();
+            this.mapString += this.loose() + "\n\n";
         }
         if (this.restartCondition() && !this.looseCondition()) {
-            this.mapString += this.restart();
+            this.mapString += this.restart() + "\n\n";
         }
 
         // Stupid way to get all the values to sort
