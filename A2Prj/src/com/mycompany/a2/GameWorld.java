@@ -102,7 +102,9 @@ public class GameWorld extends Observable {
     }
 
     private void restartInitObjects() {
-        this.lives -= 1;
+        if (this.lives > 0) {
+            this.lives -= 1;
+        }
 
         // If there are no more lives left
         if (this.looseCondition()) {
@@ -436,7 +438,7 @@ public class GameWorld extends Observable {
         if (this.looseCondition()) {
             this.mapString += this.loose();
         }
-        if (this.restartCondition()) {
+        if (this.restartCondition() && !this.looseCondition()) {
             this.mapString += this.restart();
         }
 
