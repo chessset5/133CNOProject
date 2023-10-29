@@ -207,7 +207,7 @@ public class GameWorld extends Observable {
      *         false otherwise
      */
     public boolean looseCondition() {
-        return this.lives == 0;
+        return this.lives <= 0;
     }
 
     /**
@@ -390,16 +390,22 @@ public class GameWorld extends Observable {
 
         SingleAnt.getAnt().tick();
 
+        if (this.winCondition()) {
+            this.win();
+            return;
+        }
+        if (this.looseCondition()) {
+            this.loose();
+            return;
+        }
+        if (this.restartCondition()) {
+            this.restartInitObjects();
+        }
+
         IIterator iteratorGameObject = gameObjects.getIterator();
         while (iteratorGameObject.hasNext()) {
             GameObject gameObject = (GameObject) iteratorGameObject.getNext();
             gameObject.tick();
-        }
-        if (this.winCondition()) {
-            this.win();
-        }
-        if (this.restartCondition()) {
-            this.restartInitObjects();
         }
 
         this.clock++;
