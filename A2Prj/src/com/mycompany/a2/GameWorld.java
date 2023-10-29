@@ -160,6 +160,8 @@ public class GameWorld extends Observable {
         return new Point(0.0f, 0.0f);
     }
 
+    private static Point maxBounds = new Point(1000.0f, 1000.0f);
+
     /**
      * Top Right Border
      * Max position for top and right
@@ -167,7 +169,12 @@ public class GameWorld extends Observable {
      * @return Top Right Position
      */
     public static Point getWorldMax() {
-        return new Point(1000.0f, 1000.0f);
+        return maxBounds;
+    }
+
+    public static Point setWorldMax(Point newMax) {
+        GameWorld.maxBounds = newMax;
+        return GameWorld.maxBounds;
     }
 
     // Random point for flag because it didn't have the functionality

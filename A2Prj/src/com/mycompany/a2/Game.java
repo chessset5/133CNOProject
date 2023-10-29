@@ -10,6 +10,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
+import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
 
 import com.mycompany.a2.GameCommands.*;
@@ -48,7 +49,11 @@ public class Game extends Form {
         // ... // code here to query MapView’s width and height and set them as world’s
         // width and height
 
-        // TODO: properly set the height and width
+        int height = mv.getHeight();
+        int width = mv.getWidth();
+        GameWorld.setWorldMax(new Point((float) width, (float) height));
+        System.out.println("GameWorld Height: " + GameWorld.getWorldMax().getY());
+        System.out.println("GameWorld Width: " + GameWorld.getWorldMax().getX());
 
         gw.init(); // initialize world
 
