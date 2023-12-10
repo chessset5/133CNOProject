@@ -1,6 +1,7 @@
 package com.mycompany.a3.GameObjects.Fixed;
 
 import com.codename1.charts.util.ColorUtil;
+import com.mycompany.a3.GameObjects.GameObject;
 
 public class FoodStation extends Fixed {
 
@@ -13,9 +14,9 @@ public class FoodStation extends Fixed {
         this.capacity = this.getSize();
     }
 
-    public FoodStation(String name) {
+    public FoodStation(String name, Integer i) {
         this();
-        this.setName(name);
+        this.setName(GameObject.key(name, i));
     }
 
     public int getCapacity() {
@@ -50,6 +51,31 @@ public class FoodStation extends Fixed {
             this.capacity = 0;
             this.setColor(ColorUtil.argb(0, 0, 0, 0));
         }
+    }
+
+    /**
+     * returns s00i
+     * string + 3 left padded 0's if less than 4
+     * Used for key if using hashmap
+     * 
+     * @param s foo, bar
+     * @param i 1, 1111
+     * @return foo001, bar1111
+     */
+    public static String name(String s, Integer i) {
+        return GameObject.name(s, i);
+    }
+
+    /**
+     * Returns the key value for FoodStation.
+     * FoodStation has a different format due to map
+     * 
+     * @param s
+     * @param i
+     * @return
+     */
+    public static String key(String s, Integer i) {
+        return GameObject.name(s, i);
     }
 
 }

@@ -145,6 +145,34 @@ public abstract class GameObject {
         return true;
     }
 
+    /**
+     * returns s00i
+     * string + 3 left padded 0's if less than 4
+     * Used for key if using hashmap
+     * @param s foo, bar
+     * @param i 1, 1111
+     * @return foo001, bar1111
+     */
+    public static String name(String s,Integer i){
+        String tmp = "";
+        tmp += i.toString();
+        while(tmp.length() < 3){
+            tmp = "0" + tmp;
+        }
+        return s+tmp;
+    }
+
+    /**
+     * Returns the key value for FoodStation.
+     * FoodStation has a different format due to map
+     * @param s
+     * @param i
+     * @return
+     */
+    public static String key(String s, Integer i){
+        return name(s, i);
+    }
+
     @Override
     public String toString() {
         double xRound = Math.round(this.location.getX() * 10.0f) / 10.0;
@@ -154,5 +182,7 @@ public abstract class GameObject {
                 + ColorUtil.green(myColor) + ","
                 + ColorUtil.blue(myColor) + "]";
     }
+
+
 
 }

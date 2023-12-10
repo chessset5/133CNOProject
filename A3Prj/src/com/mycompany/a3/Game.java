@@ -10,13 +10,13 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
+import com.codename1.ui.util.UITimer;
 import com.codename1.charts.models.Point;
 import com.codename1.charts.util.ColorUtil;
-import com.codename1.ui.util.*;
 
 import com.mycompany.a3.GameCommands.*;
 
-public class Game extends Form {
+public class Game extends Form implements Runnable {
     private GameWorld gw;
     private MapView mv; // new in A2
     private ScoreView sv; // new in A2
@@ -58,7 +58,18 @@ public class Game extends Form {
 
         gw.init(); // initialize world
 
+        UITimer timer = new UITimer(this);
+
     }
+
+    public void run() {
+
+    }
+
+    // example
+    // public void run() {
+    // myContainer.repaint();
+    // }
 
     private void toolBarMenu() {
         Toolbar toolbar = new Toolbar();

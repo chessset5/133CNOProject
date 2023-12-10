@@ -7,10 +7,22 @@ public class SingleAnt {
     private SingleAnt() {
     }
 
+    /**
+     * Returns Ant. The same Ant, every time. All the time.
+     * @return
+     */
     public static Ant getAnt() {
         if (singleAnt == null) {
             singleAnt = new Ant();
         }
         return singleAnt;
+    }
+
+    /**
+     * short hand for SingleAnt.getAnt()
+     * @return
+     */
+    public static Ant g(){
+        return getAnt();
     }
 }

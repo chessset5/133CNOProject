@@ -35,6 +35,7 @@ public class GameWorld extends Observable {
     // Hash Keys for objects
     private String flagTag = "Flag";
     private String antTag = "Ant";
+    private String sAntTag = "sAnt";
     private String spiderTag = "Spider";
     private String foodStationTag = "FoodStation";
 
@@ -93,10 +94,11 @@ public class GameWorld extends Observable {
         // Food Stations
         this.numOfFoodStations = 5;
         for (int i = 1; i < this.numOfFoodStations; i++) {
-            GameObject gameObject = new FoodStation();
-            gameObject.setName(foodStationTag + i);
+            FoodStation gameObject = new FoodStation(foodStationTag,i);
             this.gameObjects.add(gameObject);
         }
+
+        SingleAnt.g().setName(sAntTag);
 
         tick();
     }
@@ -363,10 +365,11 @@ public class GameWorld extends Observable {
             // There was a station with food
             if (lastStation.getCapacity() == 0) {
                 // All its food was consumed
+                String key = GameObject.key(foodStationTag,numOfFoodStations);
+                GameObject go = new FoodStation();
+                go.setName(key);
+                this.gameObjects.put(key,go);
                 this.numOfFoodStations++;
-                this.gameObjects.put((foodStationTag + this.numOfFoodStations),
-                        new FoodStation((foodStationTag + this.numOfFoodStations)));
-
             }
         }
         this.foodTick = false;
