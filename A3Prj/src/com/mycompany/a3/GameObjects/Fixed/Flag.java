@@ -22,10 +22,16 @@ public class Flag extends Fixed {
         this.setColor(ColorUtil.argb(255, 255, 165, 0));
         GameObject.putInBounds(this);
 
-        // TODO: put it into static object to assign flag numbers
         // Insures that each flag is given different numbers (so long as not threaded)
-        this.flagNumber = Flag.sequenceNumber;
-        Flag.sequenceNumber += 1;
+        this.flagNumber = Flag.getNumber();
+    }
+
+    // returns one flag number
+    private static synchronized int getNumber() {
+        // synchronized insures no two flags get the same number
+        int oldNumber = sequenceNumber;
+        sequenceNumber++;
+        return oldNumber;
     }
 
     /**
