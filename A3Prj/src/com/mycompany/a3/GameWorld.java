@@ -94,7 +94,7 @@ public class GameWorld extends Observable {
         // Food Stations
         this.numOfFoodStations = 5;
         for (int i = 1; i < this.numOfFoodStations; i++) {
-            FoodStation gameObject = new FoodStation(foodStationTag,i);
+            FoodStation gameObject = new FoodStation(foodStationTag, i);
             this.gameObjects.add(gameObject);
         }
 
@@ -365,10 +365,10 @@ public class GameWorld extends Observable {
             // There was a station with food
             if (lastStation.getCapacity() == 0) {
                 // All its food was consumed
-                String key = GameObject.key(foodStationTag,numOfFoodStations);
+                String key = GameObject.key(foodStationTag, numOfFoodStations);
                 GameObject go = new FoodStation();
                 go.setName(key);
-                this.gameObjects.put(key,go);
+                this.gameObjects.put(key, go);
                 this.numOfFoodStations++;
             }
         }
@@ -444,7 +444,7 @@ public class GameWorld extends Observable {
         }
 
         // Stupid way to get all the values to sort
-        // could do this a a priority queue or priority heap / binary heap 
+        // could do this a a priority queue or priority heap / binary heap
         ArrayList<String> tmpList = new ArrayList<String>();
 
         IIterator iteratorGameObject = gameObjects.getIterator();
